@@ -2,9 +2,14 @@
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
+// if (!isset($_SESSION['id_usuario']) || $_SESSION['tipo_usuario'] != 'administrador') {
+//     echo json_encode(["status" => "error", "message" => "PROHIBIDO"]);
+//     exit();
+// }
 require_once '../models/MySQL.php';
 $mysql = new MySQL();
 $mysql->conectar();
+
 
 if (isset($_POST['email']) && isset($_POST['password'])) {
     $email = $_POST['email'];
