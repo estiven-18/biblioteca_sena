@@ -1,0 +1,62 @@
+<?php
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+
+
+require_once '../models/MySQL.php';
+$mysql = new MySQL();
+$mysql->conectar();
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
+    $accion = $_POST['accion'];
+
+    if ($accion == 'agregar') {
+        $titulo = filter_var($_POST['titulo'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $autor = filter_var($_POST['autor'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $ISBN = filter_var($_POST['ISBN'], FILTER_SANITIZE_NUMBER_INT);
+        $categoria = filter_var($_POST['categoria'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $cantidad = filter_var($_POST['cantidad'], FILTER_SANITIZE_NUMBER_INT);
+        $disponibilidad = filter_var($_POST['disponibilidad'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+        $consulta = "INSERT INTO libro (titulo, autor, ISBN, categoria, cantidad, disponibilidad) 
+        VALUES ('$titulo', '$autor', '$ISBN', '$categoria', $cantidad, '$disponibilidad')";
+        $resultado = $mysql->efectuarConsulta($consulta);
+
+        if ($resultado) {
+            echo json_encode(["status" => "success"]);
+        } else {
+            echo json_encode(["status" => "error", "message" => "Error al agregar el libro"]);
+        }
+    } elseif ($accion == 'editar') {
+        $id = filter_var($_POST['id'], FILTER_SANITIZE_NUMBER_INT);
+        $titulo = filter_var($_POST['titulo'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $autor = filter_var($_POST['autor'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $ISBN = filter_var($_POST['ISBN'], FILTER_SANITIZE_NUMBER_INT);
+        $categoria = filter_var($_POST['categoria'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $disponibilidad = filter_var($_POST['disponibilidad'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $cantidad = filter_var($_POST['cantidad'], FILTER_SANITIZE_NUMBER_INT);
+
+        $consulta = "UPDATE libro SET titulo='$titulo', autor='$autor', ISBN='$ISBN', categoria='$categoria',disponibilidad='$disponibilidad', cantidad=$cantidad WHERE id=$id";
+        $resultado = $mysql->efectuarConsulta($consulta);
+
+        if ($resultado) {
+            echo json_encode(["status" => "success"]);
+        } else {
+            echo json_encode(["status" => "error", "message" => "Error al editar el libro"]);
+        }
+    } elseif ($accion == 'eliminar') {
+        $id = intval($_POST['id']);
+
+        $consulta = "DELETE FROM libro WHERE id=$id";
+        $resultado = $mysql->efectuarConsulta($consulta);
+
+        if ($resultado) {
+            echo json_encode(["status" => "success"]);
+        } else {
+            echo json_encode(["status" => "error", "message" => "Error al eliminar el libro"]);
+        }
+    }
+}
+
+$mysql->desconectar();

@@ -2,7 +2,7 @@
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
-if (!isset($_SESSION['id_usuario']) || $_SESSION['tipo_usuario'] != 'administrador') {
+if (!isset($_SESSION['id_usuario'])) {
     header("Location: login.php");
     exit();
 }
@@ -10,7 +10,7 @@ require_once '../models/MySQL.php';
 $mysql = new MySQL();
 $mysql->conectar();
 
-$consulta = "SELECT * FROM libro";
+$consulta = "SELECT * FROM libro WHERE disponibilidad = 'Disponible'";
 $resultado = $mysql->efectuarConsulta($consulta);
 $mysql->desconectar();
 ?>
@@ -19,52 +19,38 @@ $mysql->desconectar();
 
 <head>
     <meta charset="UTF-8">
-    <title>Gestionar Libros</title>
+    <title>Reservar Libros</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
 </head>
 
 <body>
-    <div class="container mt-4">
-        <h2>Gestionar Libros</h2>
-        <a href="agregar_libros.php" class="btn btn-success">Agregar Libro</a>
-        <table id="tablaLibros" class="table table-striped table-hover mt-3" style="width:100%;">
+    <div class="container">
+        <h2>Reservar Libros</h2>
+        <table id="tablaReservas" class="table table-striped table-hover mt-3" style="width:100%;">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Titulo</th>
+                    <th>Título</th>
                     <th>Autor</th>
-                    <th>ISBN</th>
-                    <th>Categoria</th>
-                    <th>Cantidad</th>
-                    <th>Disponibilidad</th>
-                    <th>Acciones</th>
+                    <th>Acción</th>
                 </tr>
             </thead>
             <tbody>
                 <?php while ($libro = mysqli_fetch_assoc($resultado)): ?>
                     <tr>
-                        <td><?php echo $libro['id']; ?></td>
                         <td><?php echo $libro['titulo']; ?></td>
                         <td><?php echo $libro['autor']; ?></td>
-                        <td><?php echo $libro['ISBN']; ?></td>
-                        <td><?php echo $libro['categoria']; ?></td>
-                        <td><?php echo $libro['cantidad']; ?></td>
-                        <td><?php echo $libro['disponibilidad']; ?></td>
                         <td>
-                            <a href="editar_libro.php?id=<?php echo $libro['id']; ?>" class="btn btn-primary btn-sm">Editar</a>
-                            <button class="btn btn-danger btn-sm btnEliminar" data-id="<?php echo $libro['id']; ?>">Eliminar</button>
+                            <button class="btn btn-primary btnReservar" data-id="<?php echo $libro['id']; ?>">Reservar</button>
                         </td>
                     </tr>
                 <?php endwhile; ?>
             </tbody>
         </table>
     </div>
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../assets/js/scripts.js"></script>
 </body>
 
