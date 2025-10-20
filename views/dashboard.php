@@ -48,7 +48,8 @@ $mysql->desconectar();
         <!-- Lo que ve el administrador -->
         <?php if ($admin): ?>
             <a href="gestionar_libros.php" class="btn btn-primary">Gestionar Libros</a>
-            <a href="gestionar_reservas.php" class="btn btn-warning">Gestionar Reservas</a>
+            <a href="gestionar_prestamos.php" class="btn btn-info">Gestionar Préstamos</a>
+           
         <?php endif; ?>
 
         <!-- Lo que ve el cliente -->
@@ -75,6 +76,8 @@ $mysql->desconectar();
                 </tbody>
             </table>
         <?php endif; ?>
+
+
 
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
