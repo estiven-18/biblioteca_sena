@@ -11,15 +11,14 @@ require_once '../models/MySQL.php';
 $mysql = new MySQL();
 $mysql->conectar();
 
-
-//! Consulta de préstamos activos mirar si poner que sea < fecha devolucion mayor a hoy o que que sea activo
+//* consulta para obtener los prestamos activos junto con el nombre del usuario y el título del libro 
 $consulta = "
     SELECT prestamo.id, usuario.nombre, libro.titulo, prestamo.fecha_prestamo, prestamo.fecha_devolucion 
     FROM prestamo 
     JOIN reserva ON prestamo.id_reserva = reserva.id 
     JOIN usuario ON reserva.id_usuario = usuario.id 
     JOIN libro ON reserva.id_libro = libro.id 
-    WHERE prestamo.fecha_devolucion
+    WHERE prestamo.estado = 'activo'
 ";
 
 $resultado = $mysql->efectuarConsulta($consulta);
@@ -39,6 +38,7 @@ $mysql->desconectar();
     <div class="container mt-4">
         <h2 class="mb-3">Gestionar Préstamos</h2>
 
+        <!--//* tabla para mostrar los prestamos con la opcion de marcar como devuelto -->
         <table id="tablaPrestamos" class="table table-striped table-hover">
             <thead class="table-dark">
                 <tr>
@@ -59,6 +59,8 @@ $mysql->desconectar();
                         <td><?php echo $prestamo['fecha_prestamo']; ?></td>
                         <td><?php echo $prestamo['fecha_devolucion']; ?></td>
                         <td>
+                            <!-- //* cuando se le da al boton de devolver, se marca el prestamo como 'devuelto' en la base de datos -->
+                            <!-- //! se creo otro campo en la tabal de prestamo llamado 'estado' para saber si el prestamo esta activo o devuelto -->
                             <button class="btn btn-success btnDevolver btn-sm" data-id="<?php echo $prestamo['id']; ?>">
                                 Marcar Devuelto
                             </button>

@@ -45,14 +45,17 @@ $mysql->desconectar();
         <p>Total libros: <?php echo $estadisticasLibros['total_libros']; ?></p>
         <p>Total reservas: <?php echo $estadisticasReservas['total_reservas']; ?></p>
 
-        <!-- Lo que ve el administrador -->
+        <!-- //*Lo que ve el administrador -->
         <?php if ($admin): ?>
             <a href="gestionar_libros.php" class="btn btn-primary">Gestionar Libros</a>
+            <a href="gestionar_reservas.php" class="btn btn-warning">Gestionar Reservas</a>
             <a href="gestionar_prestamos.php" class="btn btn-info">Gestionar Préstamos</a>
-           
+            <a href="gestionar_usuarios.php" class="btn btn-secondary">Gestionar Usuarios</a>
+            <a href="informes.php" class="btn btn-dark">Informes</a>
         <?php endif; ?>
 
-        <!-- Lo que ve el cliente -->
+
+        <!-- //* Lo que ve el cliente -->
 
         <?php if (!$admin): ?>
             <a href="reservas.php" class="btn btn-success">Reservar Libros</a>

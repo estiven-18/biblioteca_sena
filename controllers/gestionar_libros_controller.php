@@ -8,8 +8,11 @@ require_once '../models/MySQL.php';
 $mysql = new MySQL();
 $mysql->conectar();
 
+//* dependiendo de la accion que venga del front, se agrega, edita o elimina un libro
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
     $accion = $_POST['accion'];
+
+    //* agregar libro
 
     if ($accion == 'agregar') {
         $titulo = filter_var($_POST['titulo'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -28,6 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
         } else {
             echo json_encode(["status" => "error", "message" => "Error al agregar el libro"]);
         }
+
+        //* editar libro
     } elseif ($accion == 'editar') {
         $id = filter_var($_POST['id'], FILTER_SANITIZE_NUMBER_INT);
         $titulo = filter_var($_POST['titulo'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -45,10 +50,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
         } else {
             echo json_encode(["status" => "error", "message" => "Error al editar el libro"]);
         }
+        //* eliminar libro
     } elseif ($accion == 'eliminar') {
         $id = intval($_POST['id']);
 
-        $consulta = "DELETE FROM libro WHERE id=$id";
+        $consulta = "UPDATE LIBRO set disponibilidad='No disponible'   WHERE id=$id";
         $resultado = $mysql->efectuarConsulta($consulta);
 
         if ($resultado) {

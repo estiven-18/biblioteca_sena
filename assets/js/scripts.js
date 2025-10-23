@@ -2,6 +2,7 @@
 $(document).ready(function () {
   $("#formRegistro").submit(function (e) {
     e.preventDefault();
+    //* es un array poruque son varios datos los que se envian al controlador
     let datos = {
       nombre: $("#nombre").val(),
       apellido: $("#apellido").val(),
@@ -35,7 +36,7 @@ $(document).ready(function () {
   });
 });
 
-//* login
+//* login empleado 
 $(document).ready(function () {
   $("#formLogin").submit(function (e) {
     e.preventDefault();
@@ -70,7 +71,7 @@ $(document).ready(function () {
   });
 });
 
-//* agregar libro
+//* agregar libro 
 $(document).ready(function () {
   $("#formAgregarLibro").submit(function (e) {
     e.preventDefault();
@@ -196,7 +197,7 @@ $(document).ready(function () {
   });
 });
 
-//* tabla de  libros
+//* datatable libros 
 $(document).ready(function () {
   if ($.fn.DataTable) {
     $("#tablaLibros").DataTable({
@@ -229,7 +230,7 @@ $(document).ready(function () {
   });
 });
 
-//*tabla reservas lo que ve el admin
+//*datatable reservas - lo que ve el empleado
 $(document).ready(function () {
   if ($.fn.DataTable) {
     $("#tablaReservas").DataTable({
@@ -241,7 +242,7 @@ $(document).ready(function () {
   }
 });
 
-//*tabla reservar lo que ve el usuario
+//* datatable mis reservas - lo que ve el usuario
 $(document).ready(function () {
   if ($.fn.DataTable) {
     $("#tablaMisReservas").DataTable({
@@ -253,9 +254,7 @@ $(document).ready(function () {
   }
 });
 
-
-
-//* Script para devolver libro   
+//*devolver libro- ya lo entrego
 $(document).ready(function () {
   $(".btnDevolver").on("click", function () {
     let id = $(this).data("id");
@@ -279,16 +278,192 @@ $(document).ready(function () {
 });
 
 
-
-//!acomodar para que se vea como las otras tablas
-//* tabla prestamos
+//* datatable de prestamos
 $(document).ready(function () {
   if ($.fn.DataTable) {
-    $("#tablaPrestamos").DataTable({ 
-        language: {
+    $("#tablaPrestamos").DataTable({
+      language: {
         url: "https://cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json",
-      },        
+      },
       responsive: true,
     });
-  } 
+  }
+});
+
+//* generar informe PDF
+$("#btnPDF").on("click", function () {
+  let tipo = $("#tipo_informe").val();
+  let fecha_inicio = $("#fecha_inicio").val();
+  let fecha_fin = $("#fecha_fin").val();
+  let url = `../controllers/informes_controller.php?tipo=${tipo}&fecha_inicio=${fecha_inicio}&fecha_fin=${fecha_fin}`;
+  window.open(url, "_blank");
+});
+
+//* crear usuario
+$(document).ready(function () {
+  $("#formCrearUsuario").submit(function (e) {
+    e.preventDefault();
+    let datos = {
+      nombre: $("#nombre").val(),
+      apellido: $("#apellido").val(),
+      email: $("#email").val(),
+      password: $("#password").val(),
+      tipo: $("#tipo").val(),
+    };
+    $.ajax({
+      url: "../controllers/usuario_controller.php",
+      type: "POST",
+      data: { accion: "crear", ...datos },
+      dataType: "json",
+      success: function (respuesta) {
+        if (respuesta.status === "success") {
+          alert("Usuario creado exitosamente!");
+          window.location.href = "gestionar_usuarios.php";
+        } else {
+          alert(respuesta.message);
+        }
+      },
+    });
+  });
+});
+
+//* editar usuario
+$(document).ready(function () {
+  $("#formEditarUsuario").submit(function (e) {
+    e.preventDefault();
+    let datos = {
+      id: $("#id").val(),
+      nombre: $("#nombre").val(),
+      apellido: $("#apellido").val(),
+      email: $("#email").val(),
+      tipo: $("#tipo").val(),
+      password: $("#password").val(), // Asegúrate de que esté incluido
+    };
+    $.ajax({
+      url: "../controllers/usuario_controller.php",
+      type: "POST",
+      data: { accion: "editar", ...datos },
+      dataType: "json",
+      success: function (respuesta) {
+        if (respuesta.status === "success") {
+          alert("Usuario editado exitosamente!");
+          window.location.href = "gestionar_usuarios.php";
+        } else {
+          alert(respuesta.message);
+        }
+      },
+    });
+  });
+});
+//* eliminar usuario
+$(document).ready(function () {
+  $(".btnEliminarUsuario").on("click", function () {
+    let id = $(this).data("id");
+    if (confirm("¿Estás seguro de eliminar este usuario?")) {
+      $.ajax({
+        url: "../controllers/usuario_controller.php",
+        type: "POST",
+        data: { accion: "eliminar", id: id },
+        dataType: "json",
+        success: function (respuesta) {
+          if (respuesta.status === "success") {
+            alert("Usuario eliminado!");
+            location.reload();
+          } else {
+            alert(respuesta.message);
+          }
+        },
+      });
+    }
+  });
+});
+
+
+//* crear préstamo de reserva
+$(document).ready(function () {
+  $(".btnCrearPrestamo").on("click", function () {
+    let id_reserva = $(this).data("id");
+    $.ajax({
+      url: "../controllers/reserva_controller.php",
+      type: "POST",
+      data: { accion: "crear_prestamo", id_reserva: id_reserva },
+      dataType: "json",
+      success: function (respuesta) {
+        if (respuesta.status === "success") {
+          alert("Préstamo creado exitosamente!");
+          location.reload();
+        } else {
+          alert(respuesta.message);
+        }
+      },
+    });
+  });
+});
+
+
+//* crear reserva
+$(document).ready(function () {
+  $("#formCrearReserva").submit(function (e) {
+    e.preventDefault();
+    let datos = {
+      id_usuario: $("#id_usuario").val(),
+      id_libro: $("#id_libro").val(),
+    };
+    $.ajax({
+      url: "../controllers/reserva_controller.php",
+      type: "POST",
+      data: { accion: "crear", ...datos },
+      dataType: "json",
+      success: function (respuesta) {
+        if (respuesta.status === "success") {
+          alert("Reserva creada exitosamente!");
+          window.location.href = "gestionar_reservas.php";
+        } else {
+          alert(respuesta.message);
+        }
+      },
+    });
+  });
+});
+
+//* aprobar reserva
+$(document).ready(function () {
+  $(".btnAprobar").on("click", function () {
+    let id = $(this).data("id");
+    $.ajax({
+      url: "../controllers/reserva_controller.php",
+      type: "POST",
+      data: { accion: "aprobar", id: id },
+      dataType: "json",
+      success: function (respuesta) {
+        if (respuesta.status === "success") {
+          alert("Reserva aprobada!");
+          location.reload();
+        } else {
+          alert(respuesta.message);
+        }
+      },
+    });
+  });
+});
+
+//*rechazar reserva
+$(document).ready(function () {
+  $(".btnRechazar").on("click", function () {
+    let id = $(this).data("id");
+    $.ajax({
+      url: "../controllers/reserva_controller.php",
+      type: "POST",
+      data: { accion: "rechazar", id: id },
+      dataType: "json",
+      success: function (respuesta) {
+        if (respuesta.status === "success") {
+          alert("Reserva rechazada!");
+          location.reload();
+        } else {
+          alert(respuesta.message);
+        }
+      },
+    });
+  });
 });
