@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
 
         $consulta = "UPDATE usuario SET nombre = '$nombre', apellido = '$apellido', email = '$email', tipo = '$tipo'";
         //* se pone empty para que no de error si no se envia nada en el campo password
-        if (!empty($password)) {
+        if ($password !="") {
 
             $password_hash = password_hash($password, PASSWORD_DEFAULT);
             //* tiene el . para concatenar la consulta por si se envia el password

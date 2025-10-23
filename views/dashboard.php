@@ -59,6 +59,7 @@ $mysql->desconectar();
 
         <?php if (!$admin): ?>
             <a href="reservas.php" class="btn btn-success">Reservar Libros</a>
+            
             <h3>Mis Reservas</h3>
             <table id="tablaMisReservas" class="table table-striped table-hover mt-3" style="width:100%;">
                 <thead>
