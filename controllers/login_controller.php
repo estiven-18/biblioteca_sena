@@ -9,7 +9,9 @@ $mysql->conectar();
 
 
 if (isset($_POST['email']) && isset($_POST['password'])) {
-    $email = $_POST['email'];
+
+    $email = $_POST['email'] ;
+    $email = filter_var(trim($email), FILTER_SANITIZE_EMAIL);
     $password = $_POST['password'];
 
 

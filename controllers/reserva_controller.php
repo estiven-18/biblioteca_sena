@@ -7,9 +7,7 @@ require_once '../models/MySQL.php';
 $mysql = new MySQL();
 $mysql->conectar();
 
-//!--------------------------
-//! sanitizar dattos
-//!--------------------------
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
     //* la accion la mando desde el front para saber que hacer
     //* reservar libro

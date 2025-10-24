@@ -114,7 +114,7 @@ elseif ($tipo == "reservas") {
 //* libros más prestados, lo que muestra son los 10 libros mas prestados
 
 elseif ($tipo == "mas_prestados") {
-    $titulo = "LIBROS MÁS PRESTADOS";
+    $titulo = "LIBROS MAS PRESTADOS";
     $consulta = "
         SELECT 
             libro.titulo AS Titulo,

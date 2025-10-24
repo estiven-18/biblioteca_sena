@@ -8,9 +8,12 @@ $mysql = new MySQL();
 $mysql->conectar();
 
 if (isset($_POST['nombre']) && isset($_POST['email']) && isset($_POST['password'])) {
-    $nombre = $_POST['nombre'];
-    $apellido = $_POST['apellido'];
+    $nombre = filter_var( $_POST['nombre'],FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $apellido = filter_var( $_POST['apellido'],FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
     $email = $_POST['email'];
+    $email = filter_var(trim($email), FILTER_SANITIZE_EMAIL);
+
     //* la segunda password es la de la base de datos 
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
     //*se va a poner por defecto cliente
