@@ -2,10 +2,10 @@
 if (session_status() !== PHP_SESSION_ACTIVE) {
   session_start();
 }
-if (!isset($_SESSION['id_usuario']) || $_SESSION['tipo_usuario'] != 'administrador') {
-    header("Location: login.php");
-    exit();
-}
+// if (!isset($_SESSION['id_usuario']) || $_SESSION['tipo_usuario'] != 'administrador') {
+//     header("Location: login.php");
+//     exit();
+// }
 
 require_once '../models/MySQL.php';
 $mysql = new MySQL();
@@ -242,7 +242,7 @@ $mysql->desconectar();
         </div>
 
         <div class="table-responsive shadow-sm">
-          <table id="tablaMisReservas" class="table table-hover bg-white table-bordered w-100">
+          <table id="tablaMisReservas" class="table table-hover bg-white table-bordered w-100 tablaMisReservas ">
             <thead class="table-success">
               <tr>
                 <th>Libro</th>

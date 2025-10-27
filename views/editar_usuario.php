@@ -6,45 +6,175 @@ if (!isset($_SESSION['id_usuario']) || $_SESSION['tipo_usuario'] != 'administrad
     header("Location: login.php");
     exit();
 }
+
 require_once '../models/MySQL.php';
 $mysql = new MySQL();
 $mysql->conectar();
-//* obtetenemso el id del usuario a editar
-$id = $_GET['id'];
+
+$id = $_GET['id'] ;
 $consulta = "SELECT * FROM usuario WHERE id = $id";
 $resultado = $mysql->efectuarConsulta($consulta);
 $usuario = mysqli_fetch_assoc($resultado);
 $mysql->desconectar();
+
+// if (!$usuario) {
+//     header("Location: gestionar_usuarios.php");
+//     exit();
+// }
 ?>
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
-    <title>Editar Usuario</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Usuario - Biblioteca Sena</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 260px;
+            background-color: #ffffff;
+            border-right: 1px solid #dee2e6;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 25px 15px;
+        }
+        .sidebar h5 {
+            color: #198754;
+            font-weight: bold;
+        }
+        .sidebar .nav-link {
+            color: #444;
+            border-radius: 10px;
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+        .sidebar .nav-link.active, .sidebar .nav-link:hover {
+            background-color: #d1e7dd;
+            color: #198754;
+        }
+        .logout-btn {
+            background-color: #dc3545;
+            color: #fff;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+        .logout-btn:hover {
+            background-color: #bb2d3b;
+        }
+        .content {
+            flex: 1;
+            padding: 40px;
+            background-color: #f5f7fb;
+        }
+        .user-info {
+            background: #fff;
+            padding: 10px 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            color: #198754;
+        }
+        form {
+            background: #fff;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        }
+        form h4 {
+            color: #198754;
+            font-weight: bold;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container">
-        <h2>Editar Usuario</h2>
+<div class="dashboard-container">
+
+
+<div class="sidebar">
+        <div>
+            <h5 class="mb-4 d-flex align-items-center"><i class="bi bi-book-half me-2"></i>Biblioteca Sena</h5>
+            <nav class="nav flex-column">
+                <a href="dashboard.php" class="nav-link"><i class="bi bi-house me-2"></i>Inicio</a>
+                <a href="gestionar_libros.php" class="nav-link"><i class="bi bi-journal-bookmark me-2"></i>Libros</a>
+                <a href="gestionar_reservas.php" class="nav-link"><i class="bi bi-calendar-check me-2"></i>Reservas</a>
+                <a href="gestionar_prestamos.php" class="nav-link"><i class="bi bi-box-seam me-2"></i>Préstamos</a>
+                <a href="gestionar_usuarios.php" class="nav-link active"><i class="bi bi-people me-2"></i>Usuarios</a>
+                <a href="informes.php" class="nav-link"><i class="bi bi-bar-chart-line me-2"></i>Informes</a>
+            </nav>
+        </div>
+        <a href="logout.php" class="btn logout-btn w-100 mt-4">
+            <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
+        </a>
+    </div>
+
+
+    <div class="content">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="fw-bold text-success mb-0">Editar Usuario</h2>
+                <p class="text-muted">Modifica los datos del usuario seleccionado.</p>
+            </div>
+            <div class="user-info">
+                <i class="bi bi-person-circle me-2"></i><?php echo ucfirst($_SESSION['tipo_usuario']); ?>
+            </div>
+        </div>
+
         <form id="formEditarUsuario">
-            <!-- //* todo funciona corretamente-->
             <input type="hidden" id="id" value="<?php echo $usuario['id']; ?>">
-            <input type="text" id="nombre" value="<?php echo $usuario['nombre']; ?>" required>
-            <input type="text" id="apellido" value="<?php echo $usuario['apellido']; ?>" required>
-            <input type="email" id="email" value="<?php echo $usuario['email']; ?>" required>
-            <select id="tipo" required>
-                <option value="cliente" <?php if ($usuario['tipo'] == 'cliente') echo 'selected'; ?>>Cliente</option>
-                <option value="administrador" <?php if ($usuario['tipo'] == 'administrador') echo 'selected'; ?>>Administrador</option>
-            </select>
-            <!-- //! la contraseña no se cambia y se queda la anterior -->
-            <input type="password" id="password" placeholder="Nueva Contraseña (opcional)">
-            <button type="submit">Editar Usuario</button>
+
+            <h4 class="mb-4">👤 Datos del Usuario</h4>
+
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="nombre" value="<?php echo htmlspecialchars($usuario['nombre']); ?>" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="apellido" class="form-label">Apellido</label>
+                <input type="text" class="form-control" id="apellido" value="<?php echo htmlspecialchars($usuario['apellido']); ?>" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Correo Electrónico</label>
+                <input type="email" class="form-control" id="email" value="<?php echo htmlspecialchars($usuario['email']); ?>" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="tipo" class="form-label">Tipo de Usuario</label>
+                <select class="form-select" id="tipo" required>
+                    <option value="cliente" <?php if ($usuario['tipo'] == 'cliente') echo 'selected'; ?>>Cliente</option>
+                    <option value="administrador" <?php if ($usuario['tipo'] == 'administrador') echo 'selected'; ?>>Administrador</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Nueva Contraseña (opcional)</label>
+                <input type="password" class="form-control" id="password" placeholder="Deja en blanco si no deseas cambiarla">
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <a href="gestionar_usuarios.php" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Cancelar</a>
+                <button type="submit" class="btn btn-success"><i class="bi bi-save me-2"></i>Guardar Cambios</button>
+            </div>
         </form>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../assets/js/scripts.js"></script>
-</body>
+</div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="../assets/js/scripts.js"></script>
+</body>
 </html>

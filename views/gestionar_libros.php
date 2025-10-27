@@ -6,12 +6,14 @@ if (!isset($_SESSION['id_usuario']) || $_SESSION['tipo_usuario'] != 'administrad
     header("Location: login.php");
     exit();
 }
+
 require_once '../models/MySQL.php';
 $mysql = new MySQL();
 $mysql->conectar();
 
 $consulta = "SELECT * FROM libro";
 $resultado = $mysql->efectuarConsulta($consulta);
+
 $mysql->desconectar();
 ?>
 <!DOCTYPE html>
@@ -19,46 +21,163 @@ $mysql->desconectar();
 
 <head>
     <meta charset="UTF-8">
-    <title>Gestionar Libros</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionar Libros - Biblioteca Sena</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 260px;
+            background-color: #fff;
+            border-right: 1px solid #dee2e6;
+            padding: 25px 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar h5 {
+            color: #198754;
+            font-weight: bold;
+        }
+
+        .sidebar .nav-link {
+            color: #444;
+            border-radius: 10px;
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+
+        .sidebar .nav-link.active,
+        .sidebar .nav-link:hover {
+            background-color: #d1e7dd;
+            color: #198754;
+        }
+
+        .logout-btn {
+            background-color: #dc3545;
+            color: #fff;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: #bb2d3b;
+        }
+
+        .content {
+            flex: 1;
+            padding: 40px;
+            background-color: #f5f7fb;
+        }
+
+        .user-info {
+            background: #fff;
+            padding: 10px 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            color: #198754;
+        }
+
+        table.dataTable thead {
+            background-color: #198754;
+            color: white;
+        }
+
+        .btn-sm {
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container mt-4">
-        <h2>Gestionar Libros</h2>
-        <a href="agregar_libros.php" class="btn btn-success">Agregar Libro</a>
-        <table id="tablaLibros" class="table table-striped table-hover mt-3" style="width:100%;">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Titulo</th>
-                    <th>Autor</th>
-                    <th>ISBN</th>
-                    <th>Categoria</th>
-                    <th>Cantidad</th>
-                    <th>Disponibilidad</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while ($libro = mysqli_fetch_assoc($resultado)): ?>
-                    <tr>
-                        <td><?php echo $libro['id']; ?></td>
-                        <td><?php echo $libro['titulo']; ?></td>
-                        <td><?php echo $libro['autor']; ?></td>
-                        <td><?php echo $libro['ISBN']; ?></td>
-                        <td><?php echo $libro['categoria']; ?></td>
-                        <td><?php echo $libro['cantidad']; ?></td>
-                        <td><?php echo $libro['disponibilidad']; ?></td>
-                        <td>
-                            <a href="editar_libro.php?id=<?php echo $libro['id']; ?>" class="btn btn-primary btn-sm">Editar</a>
-                            <button class="btn btn-danger btn-sm btnEliminar" data-id="<?php echo $libro['id']; ?>">Eliminar</button>
-                        </td>
-                    </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
+    <div class="dashboard-container">
+
+        <div class="sidebar">
+            <div>
+                <h5 class="mb-4 d-flex align-items-center"><i class="bi bi-book-half me-2"></i>Biblioteca Sena</h5>
+                <nav class="nav flex-column">
+                    <a href="dashboard.php" class="nav-link"><i class="bi bi-house me-2"></i>Inicio</a>
+                    <a href="gestionar_libros.php" class="nav-link active"><i class="bi bi-journal-bookmark me-2"></i>Libros</a>
+                    <a href="gestionar_reservas.php" class="nav-link"><i class="bi bi-calendar-check me-2"></i>Reservas</a>
+                    <a href="gestionar_prestamos.php" class="nav-link"><i class="bi bi-box-seam me-2"></i>Préstamos</a>
+                    <a href="gestionar_usuarios.php" class="nav-link"><i class="bi bi-people me-2"></i>Usuarios</a>
+                    <a href="informes.php" class="nav-link"><i class="bi bi-bar-chart-line me-2"></i>Informes</a>
+                </nav>
+            </div>
+            <a href="logout.php" class="btn logout-btn w-100 mt-4">
+                <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
+            </a>
+        </div>
+
+        <div class="content">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2 class="fw-bold text-success mb-0">Gestionar Libros</h2>
+                    <p class="text-muted">Administra los libros registrados en la biblioteca.</p>
+                </div>
+                <div class="user-info">
+                    <i class="bi bi-person-circle me-2"></i><?php echo ucfirst($_SESSION['tipo_usuario']); ?>
+                </div>
+            </div>
+
+            <div class="card p-4 shadow-sm">
+                <div class="d-flex justify-content-between mb-3">
+                    <h5 class="text-success fw-bold mb-0"><i class="bi bi-journal-bookmark me-2"></i>Listado de Libros</h5>
+                    <a href="agregar_libros.php" class="btn btn-success"><i class="bi bi-plus-lg"></i> Agregar Libro</a>
+                </div>
+
+                <table id="tablaLibros" class="table table-striped table-hover mt-3" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Título</th>
+                            <th>Autor</th>
+                            <th>ISBN</th>
+                            <th>Categoría</th>
+                            <th>Cantidad</th>
+                            <th>Disponibilidad</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php while ($libro = mysqli_fetch_assoc($resultado)): ?>
+                            <tr>
+                                <td><?php echo $libro['id']; ?></td>
+                                <td><?php echo htmlspecialchars($libro['titulo']); ?></td>
+                                <td><?php echo htmlspecialchars($libro['autor']); ?></td>
+                                <td><?php echo htmlspecialchars($libro['ISBN']); ?></td>
+                                <td><?php echo htmlspecialchars($libro['categoria']); ?></td>
+                                <td><?php echo $libro['cantidad']; ?></td>
+                                <td>
+                                    <span class="badge bg-<?php echo $libro['disponibilidad'] == 'Disponible' ? 'success' : 'danger'; ?>">
+                                        <?php echo $libro['disponibilidad']; ?>
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="editar_libro.php?id=<?php echo $libro['id']; ?>" class="btn btn-primary btn-sm"><i class="bi bi-pencil-square"></i></a>
+                                    <button class="btn btn-danger btn-sm btnEliminar" data-id="<?php echo $libro['id']; ?>"><i class="bi bi-trash"></i></button>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -66,6 +185,9 @@ $mysql->desconectar();
     <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../assets/js/scripts.js"></script>
+
+
+
 </body>
 
 </html>
