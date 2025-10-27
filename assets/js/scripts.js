@@ -467,3 +467,40 @@ $(document).ready(function () {
     });
   });
 });
+
+//* boton logout
+$(document).ready(function () {
+  $(".btnLogout").on("click", function (e) {
+    e.preventDefault();
+
+    Swal.fire({
+      title: "¿Cerrar sesión?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Cerrar sesión",
+      cancelButtonText: "Cancelar",
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: "../controllers/logout_controller.php",
+
+          type: "POST",
+          success: function () {
+            Swal.fire({
+              icon: "success",
+              title: "Sesión cerrada",
+              timer: 2000,
+              showConfirmButton: false,
+            }).then(() => {
+              window.location.href = "../views/login.php";
+            });
+          },
+          error: function () {
+            Swal.fire("Error", "No se pudo cerrar la sesión", "error");
+          },
+        });
+      }
+    });
+  });
+});
