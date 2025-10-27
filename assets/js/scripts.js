@@ -504,3 +504,51 @@ $(document).ready(function () {
     });
   });
 });
+
+//* editar perfil pero el que lo hace el usuario
+$(document).ready(function () {
+  $("#formEditarPerfil").submit(function (e) {
+    e.preventDefault();
+    let datos = {
+      id: $("#id").val(),
+      nombre: $("#nombre").val(),
+      apellido: $("#apellido").val(),
+      email: $("#email").val(),
+      password: $("#password").val(),
+    };
+    $.ajax({
+      url: "../controllers/usuario_controller.php",
+      type: "POST",
+      data: { accion: "editar_perfil", ...datos },
+      dataType: "json",
+      success: function (respuesta) {
+        if (respuesta.status === "success") {
+          alert("Perfil actualizado exitosamente!");
+          window.location.href = "perfil.php";
+        } else {
+          alert(respuesta.message);
+        }
+      },
+    });
+  });
+});
+
+//* tabla de historial de reservas
+$(document).ready(function () {
+  $("#tablaHistorialReservas").DataTable({
+    language: {
+      url: "https://cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json",
+    },
+    responsive: true,
+  });
+});
+
+//* tabla de historial de prestamos
+$(document).ready(function () {
+  $("#tablaHistorialPrestamos").DataTable({
+    language: {
+      url: "https://cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json",
+    },
+    responsive: true,
+  });
+});

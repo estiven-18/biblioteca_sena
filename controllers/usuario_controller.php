@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
         } else {
             echo json_encode(["status" => "error", "message" => "Error al crear usuario"]);
         }
-        //* editar
+        //* editar el usuario pero el admin lo edita
     } elseif ($_POST['accion'] == 'editar') {
         $id = $_POST['id'];
         $nombre = $_POST['nombre'];
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
 
         $consulta = "UPDATE usuario SET nombre = '$nombre', apellido = '$apellido', email = '$email', tipo = '$tipo'";
         //* se pone empty para que no de error si no se envia nada en el campo password
-        if ($password !="") {
+        if ($password != "") {
 
             $password_hash = password_hash($password, PASSWORD_DEFAULT);
             //* tiene el . para concatenar la consulta por si se envia el password
@@ -63,7 +63,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
         } else {
             echo json_encode(["status" => "error", "message" => "Error al eliminar usuario"]);
         }
+        //? edita el perfil del usuario- es decir el mismo lo hace 
+    } elseif ($_POST['accion'] == 'editar_perfil') {
+        $id = $_POST['id'];
+        $nombre = $_POST['nombre'];
+        $apellido = $_POST['apellido'];
+        $email = $_POST['email'];
+        $password = $_POST['password'] ;
+
+        $consulta = "UPDATE usuario SET nombre = '$nombre', apellido = '$apellido', email = '$email'";
+        if ($password != "") {
+            $password_hash = password_hash($password, PASSWORD_DEFAULT);
+            $consulta .= ", contrasena = '$password_hash'";
+        }
+        $consulta .= " WHERE id = $id";
+
+        $resultado=$mysql->efectuarConsulta($consulta);
+
+        if ($resultado) {
+            echo json_encode(["status" => "success"]);
+        } else {
+            echo json_encode(["status" => "error", "message" => "Error al editar perfil"]);
+        }
     }
-    
 }
 $mysql->desconectar();

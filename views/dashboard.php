@@ -177,11 +177,17 @@ $mysql->desconectar();
             <a href="mis_prestamos.php" class="nav-link"><i class="bi bi-box-seam me-2"></i>Mis Préstamos</a>
             <a href="historial.php" class="nav-link"><i class="bi bi-clock-history me-2"></i>Historial</a>
             <a href="soporte.php" class="nav-link"><i class="bi bi-envelope me-2"></i>Soporte</a>
+            <a href="perfil.php" class="btn btn-light">Mi Perfil</a>
           <?php endif; ?>
         </nav>
       </div>
                         <button class="btn btn-outline-danger mt-3 w-100 btnLogout">Cerrar Sesión</button>
     </div>
+
+
+    <a href="historial_prestamos.php" class="btn btn-info">Historial de Préstamos</a>
+        <a href="historial_reservas.php" class="btn btn-warning">Historial de Reservas</a>
+
 
 
     <div class="content">
