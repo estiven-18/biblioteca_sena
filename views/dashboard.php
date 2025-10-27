@@ -2,10 +2,10 @@
 if (session_status() !== PHP_SESSION_ACTIVE) {
   session_start();
 }
-// if (!isset($_SESSION['id_usuario']) || $_SESSION['tipo_usuario'] != 'administrador') {
-//     header("Location: login.php");
-//     exit();
-// }
+if (!isset($_SESSION['id_usuario'])) {
+  header("Location: login.php");
+  exit();
+}
 
 require_once '../models/MySQL.php';
 $mysql = new MySQL();
@@ -160,33 +160,35 @@ $mysql->desconectar();
 
 
 
-  <div class="sidebar">
+    <div class="sidebar">
       <div>
         <h5 class="mb-4 d-flex align-items-center"><i class="bi bi-book-half me-2"></i>Biblioteca Sena</h5>
         <nav class="nav flex-column">
-          <a href="dashboard.php" class="nav-link active"><i class="bi bi-house me-2"></i>Inicio</a>
+          <a href="dashboard.php" class="nav-link active"><i class="bi bi-house me-2"></i>DashBoard</a>
           <?php if ($admin): ?>
             <a href="gestionar_libros.php" class="nav-link"><i class="bi bi-journal-bookmark me-2"></i>Libros</a>
             <a href="gestionar_reservas.php" class="nav-link"><i class="bi bi-calendar-check me-2"></i>Reservas</a>
             <a href="gestionar_prestamos.php" class="nav-link"><i class="bi bi-box-seam me-2"></i>Préstamos</a>
             <a href="gestionar_usuarios.php" class="nav-link"><i class="bi bi-people me-2"></i>Usuarios</a>
             <a href="informes.php" class="nav-link"><i class="bi bi-bar-chart-line me-2"></i>Informes</a>
+            <a href="historial_prestamos.php" class="nav-link active"><i class="bi bi-clock-history me-2"></i>Historial Prestamos</a>
+            <a href="historial_reservas.php" class="nav-link "><i class="bi bi-calendar-range me-2"></i>Historial Reservas</a>
           <?php else: ?>
-            <a href="catalogo.php" class="nav-link"><i class="bi bi-book me-2"></i>Catálogo</a>
-            <a href="mis_reservas.php" class="nav-link"><i class="bi bi-calendar-check me-2"></i>Mis Reservas</a>
-            <a href="mis_prestamos.php" class="nav-link"><i class="bi bi-box-seam me-2"></i>Mis Préstamos</a>
-            <a href="historial.php" class="nav-link"><i class="bi bi-clock-history me-2"></i>Historial</a>
-            <a href="soporte.php" class="nav-link"><i class="bi bi-envelope me-2"></i>Soporte</a>
-            <a href="perfil.php" class="btn btn-light">Mi Perfil</a>
+            <a href="historial_prestamos.php" class="nav-link active"><i class="bi bi-clock-history me-2"></i>Historial Prestamos</a>
+            <a href="historial_reservas.php" class="nav-link "><i class="bi bi-calendar-range me-2"></i>Historial Reservas</a>
+            <a href="perfil.php" class="nav-link"><i class="bi  bi-person-circle me-2"></i>Perfil</a>
           <?php endif; ?>
         </nav>
       </div>
-                        <button class="btn btn-outline-danger mt-3 w-100 btnLogout">Cerrar Sesión</button>
+
+      <!--//! organizar y poner en todas las views -->
+      <button class="btn logout-btn w-100 mt-4 btnLogout">
+        <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
+        </a></button>
     </div>
 
 
-    <a href="historial_prestamos.php" class="btn btn-info">Historial de Préstamos</a>
-        <a href="historial_reservas.php" class="btn btn-warning">Historial de Reservas</a>
+
 
 
 
@@ -197,7 +199,7 @@ $mysql->desconectar();
           <p class="text-muted">Bienvenido al sistema de gestión de Biblioteca Sena</p>
         </div>
         <div class="user-info">
-          <i class="bi bi-person-circle me-2"></i><?php echo ucfirst($_SESSION['tipo_usuario']); ?>
+          <i class="bi bi-person-circle me-2"></i><?php echo ($_SESSION['tipo_usuario']); ?>
         </div>
       </div>
 
@@ -214,7 +216,7 @@ $mysql->desconectar();
         <div class="col-md-6 col-lg-3">
           <div class="card-dashboard">
             <div class="icon text-primary"><i class="bi bi-calendar-check"></i></div>
-            <h5><?php echo $admin ? 'Total Reservas' : 'Mis Reservas'; ?></h5>
+            <h5><?php echo $admin  ? 'Total Reservas' : 'Mis Reservas'; ?></h5>
             <h3 class="fw-bold text-primary"><?php echo $estadisticasReservas['total_reservas']; ?></h3>
           </div>
         </div>
@@ -243,7 +245,7 @@ $mysql->desconectar();
 
       <?php if (!$admin): ?>
         <div class="d-flex justify-content-between align-items-center mb-3">
-          <h4 class="fw-bold text-success">📅 Mis Reservas</h4>
+          <h4 class="fw-bold text-success"><i class="bi bi-calendar-check me-2"></i> Mis Reservas</h4>
           <a href="reservas.php" class="btn btn-success"><i class="bi bi-plus-lg"></i> Nueva Reserva</a>
         </div>
 
@@ -278,10 +280,10 @@ $mysql->desconectar();
   </div>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="../assets/js/scripts.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="../assets/js/scripts.js"></script>
 
   <!-- <script>
     //* boton logout

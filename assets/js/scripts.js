@@ -36,7 +36,7 @@ $(document).ready(function () {
   });
 });
 
-//* login empleado 
+//* login empleado
 $(document).ready(function () {
   $("#formLogin").submit(function (e) {
     e.preventDefault();
@@ -71,7 +71,7 @@ $(document).ready(function () {
   });
 });
 
-//* agregar libro 
+//* agregar libro
 $(document).ready(function () {
   $("#formAgregarLibro").submit(function (e) {
     e.preventDefault();
@@ -197,7 +197,7 @@ $(document).ready(function () {
   });
 });
 
-//* datatable libros 
+//* datatable libros
 $(document).ready(function () {
   if ($.fn.DataTable) {
     $("#tablaLibros").DataTable({
@@ -276,7 +276,6 @@ $(document).ready(function () {
     }
   });
 });
-
 
 //* datatable de prestamos
 $(document).ready(function () {
@@ -378,7 +377,6 @@ $(document).ready(function () {
   });
 });
 
-
 //* crear préstamo de reserva
 $(document).ready(function () {
   $(".btnCrearPrestamo").on("click", function () {
@@ -399,7 +397,6 @@ $(document).ready(function () {
     });
   });
 });
-
 
 //* crear reserva
 $(document).ready(function () {
@@ -506,49 +503,71 @@ $(document).ready(function () {
 });
 
 //* editar perfil pero el que lo hace el usuario
-$(document).ready(function () {
-  $("#formEditarPerfil").submit(function (e) {
-    e.preventDefault();
-    let datos = {
-      id: $("#id").val(),
-      nombre: $("#nombre").val(),
-      apellido: $("#apellido").val(),
-      email: $("#email").val(),
-      password: $("#password").val(),
-    };
-    $.ajax({
-      url: "../controllers/usuario_controller.php",
-      type: "POST",
-      data: { accion: "editar_perfil", ...datos },
-      dataType: "json",
-      success: function (respuesta) {
-        if (respuesta.status === "success") {
-          alert("Perfil actualizado exitosamente!");
-          window.location.href = "perfil.php";
-        } else {
-          alert(respuesta.message);
-        }
-      },
+// Script para editar perfil
+$(document).ready(function() {
+    console.log("Script cargado");  // Debug
+    $("#formEditarPerfil").submit(function(e) {
+        console.log("Formulario enviado");  // Debug
+        e.preventDefault();  // Previene recarga
+        let datos = {
+            id: $("#id").val(),
+            nombre: $("#nombre").val(),
+            apellido: $("#apellido").val(),
+            email: $("#email").val(),
+            password: $("#password").val()
+        };
+        console.log("Datos enviados:", datos);  // Debug
+        $.ajax({
+            url: "../controllers/usuario_controller.php",
+            type: "POST",
+            data: { accion: "editar_perfil", ...datos },
+            dataType: "json",
+            success: function(respuesta) {
+                console.log("Respuesta del servidor:", respuesta);  // Debug
+                if (respuesta.status === "success") {
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Éxito!',
+                        text: 'Perfil actualizado exitosamente.',
+                        confirmButtonText: 'Aceptar'
+                    }).then(() => {
+                        location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: respuesta.message,
+                        confirmButtonText: 'Aceptar'
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                console.log("Error AJAX:", xhr.responseText);  // Debug
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error en la solicitud.',
+                    confirmButtonText: 'Aceptar'
+                });
+            }
+        });
     });
-  });
 });
 
-//* tabla de historial de reservas
-$(document).ready(function () {
-  $("#tablaHistorialReservas").DataTable({
-    language: {
-      url: "https://cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json",
-    },
-    responsive: true,
-  });
-});
 
-//* tabla de historial de prestamos
-$(document).ready(function () {
-  $("#tablaHistorialPrestamos").DataTable({
-    language: {
-      url: "https://cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json",
-    },
-    responsive: true,
-  });
-});
+// //* tabla de historial de reservas
+// $(document).ready(function () {
+//   $("#tablaHistorialReservas").DataTable({
+//     language: {
+//       url: "https://cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json",
+//     },
+//     responsive: true,
+//   });
+// });
+
+
+
+
+
+

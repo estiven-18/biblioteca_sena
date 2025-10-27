@@ -14,18 +14,13 @@ $tipo = $_GET['tipo'] ;
 $fecha_inicio = $_GET['fecha_inicio'];
 $fecha_fin = $_GET['fecha_fin'];
 
-//todo    $fecha_inicio = $_GET['fecha_inicio'] ?? null;
-//todo   $fecha_fin = $_GET['fecha_fin'] ?? null;
 
-//todo  if (!$tipo) {
-//todo    exit("Faltan parámetros.");
-//todo  }
 
 class PDF extends FPDF {
     //* esta clase es para el encabezado y pie de pagina del pdf
     function Header() {
         $this->SetFont('Arial', 'B', 14);
-        $this->Cell(0, 10, utf8_decode('Biblioteca Pública - Informe General'), 0, 1, 'C');
+        $this->Cell(0, 10, utf8_decode('Biblioteca Sena - Informe General'), 0, 1, 'C');
         $this->Ln(5);
     }
 
@@ -163,7 +158,7 @@ $pdf->Cell(0, 10, utf8_decode($titulo), 0, 1, 'C');
 $pdf->Ln(8);
 
 $pdf->SetFont('Arial', 'B', 10);
-$pdf->SetFillColor(200, 220, 255);
+$pdf->SetFillColor(11, 218, 81);
 
 //* verificar si hay datos para mostrar
 $primeraFila = mysqli_fetch_assoc($resultado);

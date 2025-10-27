@@ -90,17 +90,27 @@ if (!isset($_SESSION['id_usuario']) || $_SESSION['tipo_usuario'] != 'administrad
       color: #198754;
     }
 
-    .card-form {
-      background-color: #fff;
+    .card-dashboard {
+      border: none;
       border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      padding: 30px;
-      margin-top: 30px;
+      background-color: #fff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+      text-align: center;
+      padding: 20px;
+      transition: 0.3s;
     }
 
-    .btn {
-      border-radius: 8px;
-      font-weight: 500;
+    .card-dashboard:hover {
+      transform: translateY(-3px);
+    }
+
+    .card-dashboard .icon {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    table.dataTable {
+      width: 100% !important;
     }
   </style>
 </head>
@@ -113,15 +123,23 @@ if (!isset($_SESSION['id_usuario']) || $_SESSION['tipo_usuario'] != 'administrad
       <div>
         <h5 class="mb-4 d-flex align-items-center"><i class="bi bi-book-half me-2"></i>Biblioteca Sena</h5>
         <nav class="nav flex-column">
-          <a href="dashboard.php" class="nav-link"><i class="bi bi-house me-2"></i>Inicio</a>
+          <a href="dashboard.php" class="nav-link "><i class="bi bi-house me-2"></i>DashBoard</a>
+
           <a href="gestionar_libros.php" class="nav-link"><i class="bi bi-journal-bookmark me-2"></i>Libros</a>
           <a href="gestionar_reservas.php" class="nav-link"><i class="bi bi-calendar-check me-2"></i>Reservas</a>
           <a href="gestionar_prestamos.php" class="nav-link"><i class="bi bi-box-seam me-2"></i>Préstamos</a>
           <a href="gestionar_usuarios.php" class="nav-link"><i class="bi bi-people me-2"></i>Usuarios</a>
           <a href="informes.php" class="nav-link active"><i class="bi bi-bar-chart-line me-2"></i>Informes</a>
+          <a href="historial_prestamos.php" class="nav-link"><i class="bi bi-bar-chart-line me-2"></i>Historial Prestamos</a>
+          <a href="historial_reservas.php" class="nav-link"><i class="bi bi-bar-chart-line me-2"></i>Historial Reservas</a>
+
         </nav>
       </div>
-      <a href="logout.php" class="btn logout-btn w-100 mt-4"><i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión</a>
+
+      <!--//! organizar y poner en todas las views -->
+      <button class="btn logout-btn w-100 mt-4 btnLogout">
+        <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
+        </a></button>
     </div>
 
     <div class="content">
@@ -131,7 +149,7 @@ if (!isset($_SESSION['id_usuario']) || $_SESSION['tipo_usuario'] != 'administrad
           <p class="text-muted">Cree y exporte reportes sobre libros, usuarios, reservas y más.</p>
         </div>
         <div class="user-info">
-          <i class="bi bi-person-circle me-2"></i><?php echo ucfirst($_SESSION['tipo_usuario']); ?>
+          <i class="bi bi-person-circle me-2"></i><?php echo ($_SESSION['tipo_usuario']); ?>
         </div>
       </div>
 
@@ -164,7 +182,7 @@ if (!isset($_SESSION['id_usuario']) || $_SESSION['tipo_usuario'] != 'administrad
               <i class="bi bi-filetype-pdf me-2"></i>Generar PDF
             </button>
 
-            //! no sirveeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+            <!--//! no sirveeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee -->
             <button type="button" id="btnExcel" class="btn btn-success">
               <i class="bi bi-filetype-xlsx me-2"></i>Exportar Excel
             </button>

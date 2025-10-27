@@ -44,12 +44,12 @@ $mysql->desconectar();
 
         .sidebar {
             width: 260px;
-            background-color: #fff;
+            background-color: #ffffff;
             border-right: 1px solid #dee2e6;
-            padding: 25px 15px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            padding: 25px 15px;
         }
 
         .sidebar h5 {
@@ -63,6 +63,7 @@ $mysql->desconectar();
             padding: 10px 15px;
             margin-bottom: 8px;
             transition: 0.3s;
+            font-weight: 500;
         }
 
         .sidebar .nav-link.active,
@@ -74,6 +75,7 @@ $mysql->desconectar();
         .logout-btn {
             background-color: #dc3545;
             color: #fff;
+            font-weight: 500;
             border-radius: 8px;
             transition: 0.3s;
         }
@@ -88,14 +90,41 @@ $mysql->desconectar();
             background-color: #f5f7fb;
         }
 
-        table.dataTable thead {
-            background-color: #198754;
-            color: white;
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .btn-sm {
-            border-radius: 8px;
-            font-size: 0.85rem;
+        .user-info {
+            background: #fff;
+            padding: 10px 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            color: #198754;
+        }
+
+        .card-dashboard {
+            border: none;
+            border-radius: 16px;
+            background-color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            padding: 20px;
+            transition: 0.3s;
+        }
+
+        .card-dashboard:hover {
+            transform: translateY(-3px);
+        }
+
+        .card-dashboard .icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        table.dataTable {
+            width: 100% !important;
         }
     </style>
 </head>
@@ -108,16 +137,23 @@ $mysql->desconectar();
             <div>
                 <h5 class="mb-4 d-flex align-items-center"><i class="bi bi-book-half me-2"></i>Biblioteca Sena</h5>
                 <nav class="nav flex-column">
-                    <a href="dashboard.php" class="nav-link"><i class="bi bi-house me-2"></i>Inicio</a>
+                    <a href="dashboard.php" class="nav-link "><i class="bi bi-house me-2"></i>DashBoard</a>
+
                     <a href="gestionar_libros.php" class="nav-link"><i class="bi bi-journal-bookmark me-2"></i>Libros</a>
                     <a href="gestionar_reservas.php" class="nav-link active"><i class="bi bi-calendar-check me-2"></i>Reservas</a>
                     <a href="gestionar_prestamos.php" class="nav-link"><i class="bi bi-box-seam me-2"></i>Préstamos</a>
                     <a href="gestionar_usuarios.php" class="nav-link"><i class="bi bi-people me-2"></i>Usuarios</a>
+                    <a href="informes.php" class="nav-link"><i class="bi bi-bar-chart-line me-2"></i>Informes</a>
+                    <a href="historial_prestamos.php" class="nav-link active"><i class="bi bi-clock-history me-2"></i>Historial Prestamos</a>
+                        <a href="historial_reservas.php" class="nav-link "><i class="bi bi-calendar-range me-2"></i>Historial Reservas</a>
+
                 </nav>
             </div>
-            <a href="logout.php" class="btn logout-btn w-100 mt-4">
+
+            <!--//! organizar y poner en todas las views -->
+            <button class="btn logout-btn w-100 mt-4 btnLogout">
                 <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
-            </a>
+                </a></button>
         </div>
 
 
@@ -128,7 +164,7 @@ $mysql->desconectar();
                     <p class="text-muted">Aprobar, rechazar o convertir en préstamo las reservas activas.</p>
                 </div>
                 <div class="user-info bg-white p-2 rounded shadow-sm text-success">
-                    <i class="bi bi-person-circle me-2"></i><?php echo ucfirst($_SESSION['tipo_usuario']); ?>
+                    <i class="bi bi-person-circle me-2"></i><?php echo ($_SESSION['tipo_usuario']); ?>
                 </div>
             </div>
 

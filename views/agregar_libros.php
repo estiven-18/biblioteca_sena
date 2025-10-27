@@ -2,7 +2,7 @@
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
-if (!isset($_SESSION['id_usuario'])) {
+if (!isset($_SESSION['id_usuario']) || $_SESSION['tipo_usuario'] != 'administrador') {
     header("Location: login.php");
     exit();
 }
@@ -90,16 +90,27 @@ $admin = $_SESSION['tipo_usuario'] === 'administrador';
             color: #198754;
         }
 
-        form {
-            background: #fff;
-            border-radius: 12px;
-            padding: 30px;
+        .card-dashboard {
+            border: none;
+            border-radius: 16px;
+            background-color: #fff;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            padding: 20px;
+            transition: 0.3s;
         }
 
-        form h4 {
-            color: #198754;
-            font-weight: bold;
+        .card-dashboard:hover {
+            transform: translateY(-3px);
+        }
+
+        .card-dashboard .icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        table.dataTable {
+            width: 100% !important;
         }
     </style>
 </head>
@@ -112,23 +123,27 @@ $admin = $_SESSION['tipo_usuario'] === 'administrador';
             <div>
                 <h5 class="mb-4 d-flex align-items-center"><i class="bi bi-book-half me-2"></i>Biblioteca Sena</h5>
                 <nav class="nav flex-column">
-                    <a href="dashboard.php" class="nav-link"><i class="bi bi-house me-2"></i>Inicio</a>
+                    <a href="dashboard.php" class="nav-link "><i class="bi bi-house me-2"></i>DashBoard</a>
                     <?php if ($admin): ?>
                         <a href="gestionar_libros.php" class="nav-link active"><i class="bi bi-journal-bookmark me-2"></i>Libros</a>
                         <a href="gestionar_reservas.php" class="nav-link"><i class="bi bi-calendar-check me-2"></i>Reservas</a>
                         <a href="gestionar_prestamos.php" class="nav-link"><i class="bi bi-box-seam me-2"></i>Préstamos</a>
                         <a href="gestionar_usuarios.php" class="nav-link"><i class="bi bi-people me-2"></i>Usuarios</a>
                         <a href="informes.php" class="nav-link"><i class="bi bi-bar-chart-line me-2"></i>Informes</a>
+                        <a href="historial_prestamos.php" class="nav-link"><i class="bi bi-bar-chart-line me-2"></i>Historial Prestamos</a>
+                        <a href="historial_reservas.php" class="nav-link"><i class="bi bi-bar-chart-line me-2"></i>Historial Reservas</a>
                     <?php else: ?>
-                        <a href="catalogo.php" class="nav-link"><i class="bi bi-book me-2"></i>Catálogo</a>
-                        <a href="mis_reservas.php" class="nav-link"><i class="bi bi-calendar-check me-2"></i>Mis Reservas</a>
-                        <a href="mis_prestamos.php" class="nav-link"><i class="bi bi-box-seam me-2"></i>Mis Préstamos</a>
-                        <a href="historial.php" class="nav-link"><i class="bi bi-clock-history me-2"></i>Historial</a>
-                        <a href="soporte.php" class="nav-link"><i class="bi bi-envelope me-2"></i>Soporte</a>
+                        <a href="historial_prestamos.php" class="nav-link active"><i class="bi bi-clock-history me-2"></i>Historial Prestamos</a>
+                        <a href="historial_reservas.php" class="nav-link "><i class="bi bi-calendar-range me-2"></i>Historial Reservas</a>
+                        <a href="perfil.php" class="nav-link"><i class="bi  bi-person-circle me-2"></i>Perfil</a>
                     <?php endif; ?>
                 </nav>
             </div>
-            <a href="logout.php" class="btn logout-btn w-100 mt-4"><i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión</a>
+
+            <!--//! organizar y poner en todas las views -->
+            <button class="btn logout-btn w-100 mt-4 btnLogout">
+                <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
+                </a></button>
         </div>
 
         <!-- //*contenido principal -->
@@ -139,13 +154,13 @@ $admin = $_SESSION['tipo_usuario'] === 'administrador';
                     <p class="text-muted">Complete los campos para registrar un nuevo libro.</p>
                 </div>
                 <div class="user-info">
-                    <i class="bi bi-person-circle me-2"></i><?php echo ucfirst($_SESSION['tipo_usuario']); ?>
+                    <i class="bi bi-person-circle me-2"></i><?php echo ($_SESSION['tipo_usuario']); ?>
                 </div>
             </div>
 
             <!-- //* formularios -->
             <form id="formAgregarLibro">
-                <h4 class="mb-4">📘 Datos del Libro</h4>
+                <h4 class="mb-4"><i class="bi bi-journal-bookmark me-2"></i> Datos del Libro</h4>
 
                 <div class="mb-3">
                     <label for="titulo" class="form-label">Título</label>
