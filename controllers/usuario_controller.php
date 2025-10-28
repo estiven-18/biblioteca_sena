@@ -6,16 +6,14 @@ require_once '../models/MySQL.php';
 $mysql = new MySQL();
 $mysql->conectar();
 
-//!--------------------------
-//! sanitizar dattos
-//!--------------------------
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
     //* la accion la mando desde el front para saber que hacer 
     //* crear
     if ($_POST['accion'] == 'crear') {
-        $nombre = $_POST['nombre'];
-        $apellido = $_POST['apellido'];
+        $nombre = filter_var($_POST['nombre'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $apellido = filter_var($_POST['apellido'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $email = $_POST['email'];
+        $email = filter_var(trim($email), FILTER_SANITIZE_EMAIL);
         $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
         $tipo = $_POST['tipo'];
 
@@ -29,9 +27,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
         //* editar el usuario pero el admin lo edita
     } elseif ($_POST['accion'] == 'editar') {
         $id = $_POST['id'];
-        $nombre = $_POST['nombre'];
-        $apellido = $_POST['apellido'];
+        $nombre = filter_var($_POST['nombre'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $apellido = filter_var($_POST['apellido'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $email = $_POST['email'];
+        $email = filter_var(trim($email), FILTER_SANITIZE_EMAIL);
         $tipo = $_POST['tipo'];
         $password = $_POST['password'];
 
@@ -66,10 +65,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
         //? edita el perfil del usuario- es decir el mismo lo hace 
     } elseif ($_POST['accion'] == 'editar_perfil') {
         $id = $_POST['id'];
-        $nombre = $_POST['nombre'];
-        $apellido = $_POST['apellido'];
+        $nombre = filter_var($_POST['nombre'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $apellido = filter_var($_POST['apellido'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $email = $_POST['email'];
-        $password = $_POST['password'] ;
+        $email = filter_var(trim($email), FILTER_SANITIZE_EMAIL);
+        $password = $_POST['password'];
 
         $consulta = "UPDATE usuario SET nombre = '$nombre', apellido = '$apellido', email = '$email'";
         if ($password != "") {
@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
         }
         $consulta .= " WHERE id = $id";
 
-        $resultado=$mysql->efectuarConsulta($consulta);
+        $resultado = $mysql->efectuarConsulta($consulta);
 
         if ($resultado) {
             echo json_encode(["status" => "success"]);

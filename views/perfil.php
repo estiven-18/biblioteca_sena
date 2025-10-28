@@ -130,8 +130,8 @@ $admin = $_SESSION['tipo_usuario'] === 'administrador';
                         <a href="historial_prestamos.php" class="nav-link"><i class="bi bi-clock-history me-2"></i>Historial Préstamos</a>
                         <a href="historial_reservas.php" class="nav-link"><i class="bi bi-calendar-range me-2"></i>Historial Reservas</a>
                     <?php else: ?>
-                        <a href="historial_prestamos.php" class="nav-link"><i class="bi bi-clock-history me-2"></i>Historial Préstamos</a>
-                        <a href="historial_reservas.php" class="nav-link"><i class="bi bi-calendar-range me-2"></i>Mis Reservas</a>
+                        <a href="historial_prestamos.php" class="nav-link "><i class="bi bi-clock-history me-2"></i>Historial Prestamos</a>
+                        <a href="historial_reservas.php" class="nav-link "><i class="bi bi-calendar-range me-2"></i>Historial Reservas</a>
                         <a href="perfil.php" class="nav-link active"><i class="bi bi-person-circle me-2"></i>Perfil</a>
                     <?php endif; ?>
                 </nav>

@@ -164,8 +164,8 @@ $mysql->desconectar();
                         <a href="historial_prestamos.php" class="nav-link active"><i class="bi bi-clock-history me-2"></i>Historial Prestamos</a>
                         <a href="historial_reservas.php" class="nav-link "><i class="bi bi-calendar-range me-2"></i>Historial Reservas</a>
                     <?php else: ?>
-                        <a href="historial_prestamos.php" class="nav-link active"><i class="bi bi-clock-history me-2"></i>Historial Préstamos</a>
-                        <a href="historial_reservas.php" class="nav-link "><i class="bi bi-calendar-range me-2"></i>Mis Reservas</a>
+                        <a href="historial_prestamos.php" class="nav-link active"><i class="bi bi-clock-history me-2"></i>Historial Prestamos</a>
+                        <a href="historial_reservas.php" class="nav-link "><i class="bi bi-calendar-range me-2"></i>Historial Reservas</a>
                         <a href="perfil.php" class="nav-link"><i class="bi bi-person-circle me-2"></i>Perfil</a>
                     <?php endif; ?>
                 </nav>
@@ -218,23 +218,26 @@ $mysql->desconectar();
         </div>
     </div>
 
-    <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../assets/js/scripts.js"></script>
 
 
     <script>
-    $(document).ready(function () {
-        $('#tablaHistorialPrestamos').DataTable({
-            language: {
-                url: "https://cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json"
-            },
-            responsive: true
+        $(document).ready(function() {
+            $('#tablaHistorialPrestamos').DataTable({
+                language: {
+                    url: "https://cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json"
+                },
+                responsive: true
+            });
         });
-    });
     </script>
 
 </body>
+
 </html>

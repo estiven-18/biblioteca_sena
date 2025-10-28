@@ -144,14 +144,13 @@ $admin = $_SESSION['tipo_usuario'] === 'administrador';
             <a href="historial_prestamos.php" class="nav-link"><i class="bi bi-bar-chart-line me-2"></i>Historial Prestamos</a>
             <a href="historial_reservas.php" class="nav-link"><i class="bi bi-bar-chart-line me-2"></i>Historial Reservas</a>
           <?php else: ?>
-            <a href="historial_prestamos.php" class="nav-link"><i class="bi bi-bar-chart-line me-2"></i>Historial Prestamos</a>
-            <a href="historial_reservas.php" class="nav-link"><i class="bi bi-bar-chart-line me-2"></i>Historial Reservas</a>
+            <a href="historial_prestamos.php" class="nav-link "><i class="bi bi-clock-history me-2"></i>Historial Prestamos</a>
+            <a href="historial_reservas.php" class="nav-link "><i class="bi bi-calendar-range me-2"></i>Historial Reservas</a>
             <a href="perfil.php" class="nav-link"><i class="bi  bi-person-circle me-2"></i>Perfil</a>
           <?php endif; ?>
         </nav>
       </div>
 
-      <!--//! organizar y poner en todas las views -->
       <button class="btn logout-btn w-100 mt-4 btnLogout">
         <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
         </a></button>
@@ -198,6 +197,7 @@ $admin = $_SESSION['tipo_usuario'] === 'administrador';
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
 

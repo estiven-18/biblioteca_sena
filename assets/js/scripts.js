@@ -503,58 +503,32 @@ $(document).ready(function () {
 });
 
 //* editar perfil pero el que lo hace el usuario
-// Script para editar perfil
-$(document).ready(function() {
-    console.log("Script cargado");  // Debug
-    $("#formEditarPerfil").submit(function(e) {
-        console.log("Formulario enviado");  // Debug
-        e.preventDefault();  // Previene recarga
-        let datos = {
-            id: $("#id").val(),
-            nombre: $("#nombre").val(),
-            apellido: $("#apellido").val(),
-            email: $("#email").val(),
-            password: $("#password").val()
-        };
-        console.log("Datos enviados:", datos);  // Debug
-        $.ajax({
-            url: "../controllers/usuario_controller.php",
-            type: "POST",
-            data: { accion: "editar_perfil", ...datos },
-            dataType: "json",
-            success: function(respuesta) {
-                console.log("Respuesta del servidor:", respuesta);  // Debug
-                if (respuesta.status === "success") {
-                    Swal.fire({
-                        icon: 'success',
-                        title: '¡Éxito!',
-                        text: 'Perfil actualizado exitosamente.',
-                        confirmButtonText: 'Aceptar'
-                    }).then(() => {
-                        location.reload();
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: respuesta.message,
-                        confirmButtonText: 'Aceptar'
-                    });
-                }
-            },
-            error: function(xhr, status, error) {
-                console.log("Error AJAX:", xhr.responseText);  // Debug
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Error en la solicitud.',
-                    confirmButtonText: 'Aceptar'
-                });
-            }
-        });
+$(document).ready(function () {
+  $("#formEditarPerfil").submit(function (e) {
+    e.preventDefault();
+    let datos = {
+      id: $("#id").val(),
+      nombre: $("#nombre").val(),
+      apellido: $("#apellido").val(),
+      email: $("#email").val(),
+      password: $("#password").val(),
+    };
+    $.ajax({
+      url: "../controllers/usuario_controller.php",
+      type: "POST",
+      data: { accion: "editar_perfil", ...datos },
+      dataType: "json",
+      success: function (respuesta) {
+        if (respuesta.status === "success") {
+          alert("Perfil actualizado exitosamente!");
+          window.location.href = "perfil.php";
+        } else {
+          alert(respuesta.message);
+        }
+      },
     });
+  });
 });
-
 
 // //* tabla de historial de reservas
 // $(document).ready(function () {

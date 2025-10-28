@@ -2,6 +2,8 @@
 if (session_status() !== PHP_SESSION_ACTIVE) {
   session_start();
 }
+
+
 if (!isset($_SESSION['id_usuario'])) {
   header("Location: login.php");
   exit();
@@ -164,17 +166,17 @@ $mysql->desconectar();
       <div>
         <h5 class="mb-4 d-flex align-items-center"><i class="bi bi-book-half me-2"></i>Biblioteca Sena</h5>
         <nav class="nav flex-column">
-          <a href="dashboard.php" class="nav-link active"><i class="bi bi-house me-2"></i>DashBoard</a>
+          <a href="dashboard.php" class="nav-link active"><i class="bi bi-house me-2"></i>Dashboard</a>
           <?php if ($admin): ?>
             <a href="gestionar_libros.php" class="nav-link"><i class="bi bi-journal-bookmark me-2"></i>Libros</a>
             <a href="gestionar_reservas.php" class="nav-link"><i class="bi bi-calendar-check me-2"></i>Reservas</a>
             <a href="gestionar_prestamos.php" class="nav-link"><i class="bi bi-box-seam me-2"></i>Préstamos</a>
             <a href="gestionar_usuarios.php" class="nav-link"><i class="bi bi-people me-2"></i>Usuarios</a>
             <a href="informes.php" class="nav-link"><i class="bi bi-bar-chart-line me-2"></i>Informes</a>
-            <a href="historial_prestamos.php" class="nav-link active"><i class="bi bi-clock-history me-2"></i>Historial Prestamos</a>
+            <a href="historial_prestamos.php" class="nav-link "><i class="bi bi-clock-history me-2"></i>Historial Prestamos</a>
             <a href="historial_reservas.php" class="nav-link "><i class="bi bi-calendar-range me-2"></i>Historial Reservas</a>
           <?php else: ?>
-            <a href="historial_prestamos.php" class="nav-link active"><i class="bi bi-clock-history me-2"></i>Historial Prestamos</a>
+            <a href="historial_prestamos.php" class="nav-link "><i class="bi bi-clock-history me-2"></i>Historial Prestamos</a>
             <a href="historial_reservas.php" class="nav-link "><i class="bi bi-calendar-range me-2"></i>Historial Reservas</a>
             <a href="perfil.php" class="nav-link"><i class="bi  bi-person-circle me-2"></i>Perfil</a>
           <?php endif; ?>
@@ -259,23 +261,23 @@ $mysql->desconectar();
               </tr>
             </thead>
             <tbody>
-              <?php if ($resultadoMisReservas && mysqli_num_rows($resultadoMisReservas) > 0): ?>
-                <?php while ($reserva = mysqli_fetch_assoc($resultadoMisReservas)): ?>
-                  <tr>
-                    <td><?php echo $reserva['titulo']; ?></td>
-                    <td><?php echo $reserva['fecha_reserva']; ?></td>
-                    <td><?php echo ucfirst($reserva['estado']); ?></td>
-                  </tr>
-                <?php endwhile; ?>
-              <?php else: ?>
+
+              <?php while ($reserva = mysqli_fetch_assoc($resultadoMisReservas)): ?>
                 <tr>
-                  <td colspan="3" class="text-center">No tienes reservas registradas.</td>
+                  <td><?php echo $reserva['titulo']; ?></td>
+                  <td><?php echo $reserva['fecha_reserva']; ?></td>
+                  <td><?php echo ucfirst($reserva['estado']); ?></td>
                 </tr>
-              <?php endif; ?>
+              <?php endwhile; ?>
+            <?php else: ?>
+              <tr>
+                <td colspan="3" class="text-center">No tienes reservas registradas.</td>
+              </tr>
+            <?php endif; ?>
             </tbody>
           </table>
         </div>
-      <?php endif; ?>
+
     </div>
   </div>
 

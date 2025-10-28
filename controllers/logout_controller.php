@@ -8,6 +8,6 @@ session_destroy();
 //!impontante tener en cuenta el status success 
 echo json_encode(["status"=>"success"]);
 
- header('location: ../views/login.php');
+
 exit();
 ?>

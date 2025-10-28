@@ -2,6 +2,8 @@
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
+
+
 if (!isset($_SESSION['id_usuario']) || $_SESSION['tipo_usuario'] != 'administrador') {
     header("Location: login.php");
     exit();
@@ -130,8 +132,8 @@ $admin = $_SESSION['tipo_usuario'] === 'administrador';
                         <a href="gestionar_prestamos.php" class="nav-link"><i class="bi bi-box-seam me-2"></i>Préstamos</a>
                         <a href="gestionar_usuarios.php" class="nav-link"><i class="bi bi-people me-2"></i>Usuarios</a>
                         <a href="informes.php" class="nav-link"><i class="bi bi-bar-chart-line me-2"></i>Informes</a>
-                        <a href="historial_prestamos.php" class="nav-link"><i class="bi bi-bar-chart-line me-2"></i>Historial Prestamos</a>
-                        <a href="historial_reservas.php" class="nav-link"><i class="bi bi-bar-chart-line me-2"></i>Historial Reservas</a>
+                        <a href="historial_prestamos.php" class="nav-link "><i class="bi bi-clock-history me-2"></i>Historial Prestamos</a>
+            <a href="historial_reservas.php" class="nav-link "><i class="bi bi-calendar-range me-2"></i>Historial Reservas</a>
                     <?php else: ?>
                         <a href="historial_prestamos.php" class="nav-link active"><i class="bi bi-clock-history me-2"></i>Historial Prestamos</a>
                         <a href="historial_reservas.php" class="nav-link "><i class="bi bi-calendar-range me-2"></i>Historial Reservas</a>
