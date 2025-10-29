@@ -125,7 +125,7 @@ $admin = $_SESSION['tipo_usuario'] === 'administrador';
             <div>
                 <h5 class="mb-4 d-flex align-items-center"><i class="bi bi-book-half me-2"></i>Biblioteca Sena</h5>
                 <nav class="nav flex-column">
-                    <a href="dashboard.php" class="nav-link "><i class="bi bi-house me-2"></i>DashBoard</a>
+                    <a href="dashboard.php" class="nav-link "><i class="bi bi-house me-2"></i>Dashboard</a>
                     <?php if ($admin): ?>
                         <a href="gestionar_libros.php" class="nav-link active"><i class="bi bi-journal-bookmark me-2"></i>Libros</a>
                         <a href="gestionar_reservas.php" class="nav-link"><i class="bi bi-calendar-check me-2"></i>Reservas</a>
@@ -135,7 +135,7 @@ $admin = $_SESSION['tipo_usuario'] === 'administrador';
                         <a href="historial_prestamos.php" class="nav-link "><i class="bi bi-clock-history me-2"></i>Historial Prestamos</a>
             <a href="historial_reservas.php" class="nav-link "><i class="bi bi-calendar-range me-2"></i>Historial Reservas</a>
                     <?php else: ?>
-                        <a href="historial_prestamos.php" class="nav-link active"><i class="bi bi-clock-history me-2"></i>Historial Prestamos</a>
+                        <a href="historial_prestamos.php" class="nav-link "><i class="bi bi-clock-history me-2"></i>Historial Prestamos</a>
                         <a href="historial_reservas.php" class="nav-link "><i class="bi bi-calendar-range me-2"></i>Historial Reservas</a>
                         <a href="perfil.php" class="nav-link"><i class="bi  bi-person-circle me-2"></i>Perfil</a>
                     <?php endif; ?>

@@ -123,7 +123,7 @@ if (!isset($_SESSION['id_usuario']) || $_SESSION['tipo_usuario'] != 'administrad
       <div>
         <h5 class="mb-4 d-flex align-items-center"><i class="bi bi-book-half me-2"></i>Biblioteca Sena</h5>
         <nav class="nav flex-column">
-          <a href="dashboard.php" class="nav-link "><i class="bi bi-house me-2"></i>DashBoard</a>
+          <a href="dashboard.php" class="nav-link "><i class="bi bi-house me-2"></i>Dashboard</a>
 
           <a href="gestionar_libros.php" class="nav-link"><i class="bi bi-journal-bookmark me-2"></i>Libros</a>
           <a href="gestionar_reservas.php" class="nav-link"><i class="bi bi-calendar-check me-2"></i>Reservas</a>

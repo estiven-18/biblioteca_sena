@@ -530,18 +530,11 @@ $(document).ready(function () {
   });
 });
 
-// //* tabla de historial de reservas
-// $(document).ready(function () {
-//   $("#tablaHistorialReservas").DataTable({
-//     language: {
-//       url: "https://cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json",
-//     },
-//     responsive: true,
-//   });
-// });
-
-
-
-
-
-
+$(document).ready(function () {
+  $("#tablaUsuarios").DataTable({
+    language: {
+      url: "https://cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json",
+    },
+    responsive: true,
+  });
+});

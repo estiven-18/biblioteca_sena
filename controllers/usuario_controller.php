@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
         //* eliminar 
     } elseif ($_POST['accion'] == 'eliminar') {
         $id = $_POST['id'];
-        $consulta = "DELETE FROM usuario WHERE id = $id";
+        $consulta = "UPDATE usuario SET email='-.' WHERE id = $id";
 
         $resultado = $mysql->efectuarConsulta($consulta);
         if ($resultado) {

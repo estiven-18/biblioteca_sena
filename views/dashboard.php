@@ -23,7 +23,11 @@ if ($admin) {
   $consultaReservas = "SELECT COUNT(*) AS total_reservas FROM reserva";
 } else {
   //* estas son las estadisticas que le van a salir al cliente, dependiendo de quien sea
+
+  //*el distinc es para que no se cunates los repetidos es decir que para que se sume 1 a la lista tinee que ser un libro nuevo
   $consultaLibros = "SELECT COUNT(DISTINCT id_libro) AS total_libros FROM reserva WHERE id_usuario = $id_usuario";
+
+  //* este cuenta todo los libros 
   $consultaReservas = "SELECT COUNT(*) AS total_reservas FROM reserva WHERE id_usuario = $id_usuario";
 }
 
@@ -230,16 +234,10 @@ $mysql->desconectar();
             <div class="card-dashboard">
               <div class="icon text-warning"><i class="bi bi-people"></i></div>
               <h5>Usuarios Activos</h5>
-              <h3 class="fw-bold text-warning">15</h3>
+              <h3 class="fw-bold text-warning">//! hace la consulta</h3>
             </div>
           </div>
-          <div class="col-md-6 col-lg-3">
-            <div class="card-dashboard">
-              <div class="icon text-info"><i class="bi bi-bar-chart-line"></i></div>
-              <h5>Reportes</h5>
-              <h3 class="fw-bold text-info">4</h3>
-            </div>
-          </div>
+          
         <?php endif; ?>
       </div>
 
@@ -269,10 +267,8 @@ $mysql->desconectar();
                   <td><?php echo ucfirst($reserva['estado']); ?></td>
                 </tr>
               <?php endwhile; ?>
-            <?php else: ?>
-              <tr>
-                <td colspan="3" class="text-center">No tienes reservas registradas.</td>
-              </tr>
+
+
             <?php endif; ?>
             </tbody>
           </table>
