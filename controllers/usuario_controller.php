@@ -17,6 +17,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
         $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
         $tipo = $_POST['tipo'];
 
+
+        $verificarEmail = "SELECT id FROM usuario WHERE email = '$email'";
+        $resultadoVerificacion = $mysql->efectuarConsulta($verificarEmail);
+
+        if ($resultadoVerificacion && mysqli_num_rows($resultadoVerificacion) > 0) {
+            echo json_encode(["status" => "error", "message" => "El correo electrónico ya está registrado."]);
+            exit;
+        }
+
+
+         
+
+
+
+
         $consulta = "INSERT INTO usuario (nombre, apellido, email, contrasena, tipo) VALUES ('$nombre', '$apellido', '$email', '$password', '$tipo')";
         $resultado = $mysql->efectuarConsulta($consulta);
         if ($resultado) {
@@ -54,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
         //* eliminar 
     } elseif ($_POST['accion'] == 'eliminar') {
         $id = $_POST['id'];
-        $consulta = "UPDATE usuario SET email='-.' WHERE id = $id";
+        $consulta = "UPDATE usuario SET contrasena='ñ(ZJDl-SW3D,.' WHERE id = $id";
 
         $resultado = $mysql->efectuarConsulta($consulta);
         if ($resultado) {

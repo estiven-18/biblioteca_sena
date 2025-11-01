@@ -213,6 +213,7 @@ $(document).ready(function () {
 $(document).ready(function () {
   $(".btnReservar").on("click", function () {
     let id_libro = $(this).data("id");
+
     $.ajax({
       url: "../controllers/reserva_controller.php",
       type: "POST",
@@ -220,15 +221,27 @@ $(document).ready(function () {
       dataType: "json",
       success: function (respuesta) {
         if (respuesta.status === "success") {
-          alert("Libro reservado exitosamente!");
-          location.reload();
+          Swal.fire({
+            icon: "success",
+            title: "Libro reservado",
+            text: "¡Libro reservado exitosamente!",
+            showConfirmButton: false,
+            timer: 1200
+          }).then(() => {
+             window.location.href = "dashboard.php";
+          });
         } else {
-          alert(respuesta.message);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: respuesta.message,
+          });
         }
       },
     });
   });
 });
+
 
 //*datatable reservas - lo que ve el empleado
 $(document).ready(function () {
@@ -258,24 +271,45 @@ $(document).ready(function () {
 $(document).ready(function () {
   $(".btnDevolver").on("click", function () {
     let id = $(this).data("id");
-    if (confirm("¿Marcar como devuelto?")) {
-      $.ajax({
-        url: "../controllers/prestamo_controller.php",
-        type: "POST",
-        data: { accion: "devolver", id: id },
-        dataType: "json",
-        success: function (respuesta) {
-          if (respuesta.status === "success") {
-            alert("Libro devuelto!");
-            location.reload();
-          } else {
-            alert(respuesta.message);
-          }
-        },
-      });
-    }
+
+    Swal.fire({
+      title: "¿Marcar como devuelto?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Sí",
+      cancelButtonText: "No",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: "../controllers/prestamo_controller.php",
+          type: "POST",
+          data: { accion: "devolver", id: id },
+          dataType: "json",
+          success: function (respuesta) {
+            if (respuesta.status === "success") {
+              Swal.fire({
+                icon: "success",
+                title: "Libro devuelto",
+                text: "El libro fue marcado como devuelto.",
+                showConfirmButton: false,
+                timer: 1200
+              }).then(() => {
+                location.reload();
+              });
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: respuesta.message,
+              });
+            }
+          },
+        });
+      }
+    });
   });
 });
+
 
 //* datatable de prestamos
 $(document).ready(function () {
@@ -302,6 +336,7 @@ $("#btnPDF").on("click", function () {
 $(document).ready(function () {
   $("#formCrearUsuario").submit(function (e) {
     e.preventDefault();
+
     let datos = {
       nombre: $("#nombre").val(),
       apellido: $("#apellido").val(),
@@ -309,6 +344,7 @@ $(document).ready(function () {
       password: $("#password").val(),
       tipo: $("#tipo").val(),
     };
+
     $.ajax({
       url: "../controllers/usuario_controller.php",
       type: "POST",
@@ -316,28 +352,42 @@ $(document).ready(function () {
       dataType: "json",
       success: function (respuesta) {
         if (respuesta.status === "success") {
-          alert("Usuario creado exitosamente!");
-          window.location.href = "gestionar_usuarios.php";
+          Swal.fire({
+            icon: "success",
+            title: "Usuario creado",
+            text: "¡Usuario creado exitosamente!",
+            showConfirmButton: false,
+            timer: 1200
+          }).then(() => {
+            window.location.href = "gestionar_usuarios.php";
+          });
         } else {
-          alert(respuesta.message);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: respuesta.message,
+          });
         }
       },
     });
   });
 });
 
+
 //* editar usuario
 $(document).ready(function () {
   $("#formEditarUsuario").submit(function (e) {
     e.preventDefault();
+
     let datos = {
       id: $("#id").val(),
       nombre: $("#nombre").val(),
       apellido: $("#apellido").val(),
       email: $("#email").val(),
       tipo: $("#tipo").val(),
-      password: $("#password").val(), // Asegúrate de que esté incluido
+      password: $("#password").val(),
     };
+
     $.ajax({
       url: "../controllers/usuario_controller.php",
       type: "POST",
@@ -345,37 +395,70 @@ $(document).ready(function () {
       dataType: "json",
       success: function (respuesta) {
         if (respuesta.status === "success") {
-          alert("Usuario editado exitosamente!");
-          window.location.href = "gestionar_usuarios.php";
+          Swal.fire({
+            icon: "success",
+            title: "Usuario editado",
+            text: "¡Usuario editado exitosamente!",
+            showConfirmButton: false,
+            timer: 1200
+          }).then(() => {
+            window.location.href = "gestionar_usuarios.php";
+          });
         } else {
-          alert(respuesta.message);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: respuesta.message,
+          });
         }
       },
     });
   });
 });
+
 //* eliminar usuario
 $(document).ready(function () {
   $(".btnEliminarUsuario").on("click", function () {
     let id = $(this).data("id");
-    if (confirm("¿Estás seguro de eliminar este usuario?")) {
-      $.ajax({
-        url: "../controllers/usuario_controller.php",
-        type: "POST",
-        data: { accion: "eliminar", id: id },
-        dataType: "json",
-        success: function (respuesta) {
-          if (respuesta.status === "success") {
-            alert("Usuario eliminado!");
-            location.reload();
-          } else {
-            alert(respuesta.message);
-          }
-        },
-      });
-    }
+
+    Swal.fire({
+      title: "¿Eliminar usuario?",
+      text: "Esta acción no se puede deshacer.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí",
+      cancelButtonText: "No",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: "../controllers/usuario_controller.php",
+          type: "POST",
+          data: { accion: "eliminar", id: id },
+          dataType: "json",
+          success: function (respuesta) {
+            if (respuesta.status === "success") {
+              Swal.fire({
+                icon: "success",
+                title: "Usuario eliminado",
+                showConfirmButton: false,
+                timer: 1200
+              }).then(() => {
+                location.reload();
+              });
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: respuesta.message,
+              });
+            }
+          },
+        });
+      }
+    });
   });
 });
+
 
 //* crear préstamo de reserva
 $(document).ready(function () {
@@ -388,15 +471,27 @@ $(document).ready(function () {
       dataType: "json",
       success: function (respuesta) {
         if (respuesta.status === "success") {
-          alert("Préstamo creado exitosamente!");
-          location.reload();
+          Swal.fire({
+            icon: "success",
+            title: "Préstamo creado",
+            text: "¡Préstamo creado exitosamente!",
+            showConfirmButton: false,
+            timer: 1200
+          }).then(() => {
+            location.reload();
+          });
         } else {
-          alert(respuesta.message);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: respuesta.message,
+          });
         }
       },
     });
   });
 });
+
 
 //* crear reserva
 $(document).ready(function () {
@@ -434,15 +529,27 @@ $(document).ready(function () {
       dataType: "json",
       success: function (respuesta) {
         if (respuesta.status === "success") {
-          alert("Reserva aprobada!");
-          location.reload();
+          Swal.fire({
+            icon: "success",
+            title: "Reserva aprobada",
+            text: "La reserva fue aprobada correctamente.",
+            showConfirmButton: false,
+            timer: 1200
+          }).then(() => {
+            location.reload();
+          });
         } else {
-          alert(respuesta.message);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: respuesta.message,
+          });
         }
       },
     });
   });
 });
+
 
 //*rechazar reserva
 $(document).ready(function () {
@@ -455,15 +562,27 @@ $(document).ready(function () {
       dataType: "json",
       success: function (respuesta) {
         if (respuesta.status === "success") {
-          alert("Reserva rechazada!");
-          location.reload();
+          Swal.fire({
+            icon: "success",
+            title: "Reserva rechazada",
+            text: "La reserva fue rechazada correctamente.",
+            showConfirmButton: false,
+            timer: 1200
+          }).then(() => {
+            location.reload();
+          });
         } else {
-          alert(respuesta.message);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: respuesta.message,
+          });
         }
       },
     });
   });
 });
+
 
 //* boton logout
 $(document).ready(function () {
@@ -506,6 +625,7 @@ $(document).ready(function () {
 $(document).ready(function () {
   $("#formEditarPerfil").submit(function (e) {
     e.preventDefault();
+
     let datos = {
       id: $("#id").val(),
       nombre: $("#nombre").val(),
@@ -513,6 +633,7 @@ $(document).ready(function () {
       email: $("#email").val(),
       password: $("#password").val(),
     };
+
     $.ajax({
       url: "../controllers/usuario_controller.php",
       type: "POST",
@@ -520,21 +641,23 @@ $(document).ready(function () {
       dataType: "json",
       success: function (respuesta) {
         if (respuesta.status === "success") {
-          alert("Perfil actualizado exitosamente!");
-          window.location.href = "perfil.php";
+          Swal.fire({
+            icon: "success",
+            title: "Perfil actualizado",
+            text: "¡Perfil actualizado exitosamente!",
+            showConfirmButton: false,
+            timer: 1200
+          }).then(() => {
+            window.location.href = "dashboard.php";
+          });
         } else {
-          alert(respuesta.message);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: respuesta.message,
+          });
         }
       },
     });
-  });
-});
-
-$(document).ready(function () {
-  $("#tablaUsuarios").DataTable({
-    language: {
-      url: "https://cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json",
-    },
-    responsive: true,
   });
 });

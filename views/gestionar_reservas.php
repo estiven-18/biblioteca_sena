@@ -171,9 +171,9 @@ $mysql->desconectar();
             <div class="card p-4 shadow-sm">
                 <div class="d-flex justify-content-between mb-3">
                     <h5 class="text-success fw-bold"><i class="bi bi-calendar-check me-2"></i>Reservas Registradas</h5>
-                    <a href="crear_reserva.php" class="btn btn-success btn-sm">
+                    <!-- <a href="crear_reserva.php" class="btn btn-success btn-sm">
                         <i class="bi bi-plus-circle me-1"></i>Nueva Reserva
-                    </a>
+                    </a> -->
                 </div>
 
                 <table id="tablaReservas" class="table table-striped table-hover">
@@ -230,3 +230,6 @@ $mysql->desconectar();
 </body>
 
 </html>
+
+
+

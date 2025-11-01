@@ -16,11 +16,19 @@ $mysql->conectar();
 $admin = $_SESSION['tipo_usuario'] === 'administrador';
 $id_usuario = $_SESSION['id_usuario'];
 
+//* se obtine la reservas para el cliente en especifico
+//* es null por que la variable va a cambiar dependiendo del cliente
+$resultadoMisReservas = null;
 
 if ($admin) {
   //* estas son las estadisticas que le van a salir al admin
   $consultaLibros = "SELECT COUNT(*) AS total_libros FROM libro";
+  $consultaUsuarios = "SELECT COUNT(*) AS total_usuarios FROM usuario";
+
   $consultaReservas = "SELECT COUNT(*) AS total_reservas FROM reserva";
+
+  $resultadoUsuarios = $mysql->efectuarConsulta($consultaUsuarios);
+$estadisticasUsuarios = mysqli_fetch_assoc($resultadoUsuarios);
 } else {
   //* estas son las estadisticas que le van a salir al cliente, dependiendo de quien sea
 
@@ -29,19 +37,9 @@ if ($admin) {
 
   //* este cuenta todo los libros 
   $consultaReservas = "SELECT COUNT(*) AS total_reservas FROM reserva WHERE id_usuario = $id_usuario";
-}
 
-$resultadoLibros = $mysql->efectuarConsulta($consultaLibros);
-$estadisticasLibros = mysqli_fetch_assoc($resultadoLibros);
 
-$resultadoReservas = $mysql->efectuarConsulta($consultaReservas);
-$estadisticasReservas = mysqli_fetch_assoc($resultadoReservas);
-
-//* se obtine la reservas para el cliente en especifico
-//* es null por que la variable va a cambiar dependiendo del cliente
-$resultadoMisReservas = null;
-if (!$admin) {
-  $consultaMisReservas = "
+   $consultaMisReservas = "
         SELECT libro.titulo, reserva.fecha_reserva, reserva.estado
         FROM reserva
         JOIN libro ON reserva.id_libro = libro.id
@@ -50,6 +48,17 @@ if (!$admin) {
     ";
   $resultadoMisReservas = $mysql->efectuarConsulta($consultaMisReservas);
 }
+
+
+
+$resultadoLibros = $mysql->efectuarConsulta($consultaLibros);
+$estadisticasLibros = mysqli_fetch_assoc($resultadoLibros);
+
+$resultadoReservas = $mysql->efectuarConsulta($consultaReservas);
+$estadisticasReservas = mysqli_fetch_assoc($resultadoReservas);
+
+
+
 
 $mysql->desconectar();
 ?>
@@ -63,113 +72,6 @@ $mysql->desconectar();
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-  <style>
-    body {
-      background-color: #f8f9fa;
-      font-family: 'Segoe UI', sans-serif;
-    }
-
-    .dashboard-container {
-      display: flex;
-      min-height: 100vh;
-    }
-
-    .sidebar {
-      width: 260px;
-      background-color: #ffffff;
-      border-right: 1px solid #dee2e6;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 25px 15px;
-    }
-
-    .sidebar h5 {
-      color: #198754;
-      font-weight: bold;
-    }
-
-    .sidebar .nav-link {
-      color: #444;
-      border-radius: 10px;
-      padding: 10px 15px;
-      margin-bottom: 8px;
-      transition: 0.3s;
-      font-weight: 500;
-    }
-
-    .sidebar .nav-link.active,
-    .sidebar .nav-link:hover {
-      background-color: #d1e7dd;
-      color: #198754;
-    }
-
-    .logout-btn {
-      background-color: #dc3545;
-      color: #fff;
-      font-weight: 500;
-      border-radius: 8px;
-      transition: 0.3s;
-    }
-
-    .logout-btn:hover {
-      background-color: #bb2d3b;
-    }
-
-    .content {
-      flex: 1;
-      padding: 40px;
-      background-color: #f5f7fb;
-    }
-
-    .content-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .user-info {
-      background: #fff;
-      padding: 10px 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-      color: #198754;
-    }
-
-    .card-dashboard {
-      border: none;
-      border-radius: 16px;
-      background-color: #fff;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-      text-align: center;
-      padding: 20px;
-      transition: 0.3s;
-    }
-
-    .card-dashboard:hover {
-      transform: translateY(-3px);
-    }
-
-    .card-dashboard .icon {
-      font-size: 32px;
-      margin-bottom: 10px;
-    }
-
-    table.dataTable {
-      width: 100% !important;
-    }
-  </style>
-</head>
-
-<body>
-  <div class="dashboard-container">
-
-
-
-    <div class="sidebar">
-      <div>
-        <h5 class="mb-4 d-flex align-items-center"><i class="bi bi-book-half me-2"></i>Biblioteca Sena</h5>
-        <nav class="nav flex-column">
           <a href="dashboard.php" class="nav-link active"><i class="bi bi-house me-2"></i>Dashboard</a>
           <?php if ($admin): ?>
             <a href="gestionar_libros.php" class="nav-link"><i class="bi bi-journal-bookmark me-2"></i>Libros</a>
@@ -234,7 +136,7 @@ $mysql->desconectar();
             <div class="card-dashboard">
               <div class="icon text-warning"><i class="bi bi-people"></i></div>
               <h5>Usuarios Activos</h5>
-              <h3 class="fw-bold text-warning">//! hace la consulta</h3>
+              <h3 class="fw-bold text-warning"><?php echo $estadisticasUsuarios['total_usuarios']; ?></h3>
             </div>
           </div>
           
