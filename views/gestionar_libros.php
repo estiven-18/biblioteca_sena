@@ -167,7 +167,7 @@ $mysql->desconectar();
                     <a href="agregar_libros.php" class="btn btn-success"><i class="bi bi-plus-lg"></i> Agregar Libro</a>
                 </div>
 
-                <table id="tablaLibros" class="table table-striped table-hover mt-3" style="width:100%;">
+                <table id="tablaLibros"  class="table table-striped table-hover">
                     <thead>
                         <tr>
                             <th>ID</th>

@@ -661,3 +661,61 @@ $(document).ready(function () {
     });
   });
 });
+
+//*generar informe excel
+
+$(document).ready(function() {
+    
+    $('#btnExcel').click(function() {
+        let tipo = $('#tipo_informe').val();
+        let fechaInicio = $('#fecha_inicio').val();
+        let fechaFin = $('#fecha_fin').val();
+
+        //* validar fechas para informes que las requieren
+        if ((tipo === 'prestamos' || tipo === 'reservas') && (!fechaInicio || !fechaFin)) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Fechas requeridas',
+                text: 'Por favor seleccione un rango de fechas para este tipo de informe.'
+            });
+            return;
+        }
+
+        //* hacer URL con parámetros
+        let url = `../controllers/informes_excel_controller.php?tipo=${tipo}`;
+        if (fechaInicio && fechaFin) {
+            url += `&fecha_inicio=${fechaInicio}&fecha_fin=${fechaFin}`;
+        }
+
+        //* mostrar mensaje de descarga
+        Swal.fire({
+            icon: "success",
+            title: 'Generando Excel',
+            text: 'Su archivo se descargará en breve...',
+            timer: 2000,
+            showConfirmButton: false
+        });
+
+        //* descargar archivo Excel
+        window.location.href = url;
+    });
+
+    //? mostrar/ocultar campos de fecha según el tipo de informe
+    $('#tipo_informe').change(function() {
+        let tipo = $(this).val();
+        let fechasContainer = $('.row.mb-3');
+        
+        if (tipo === 'prestamos' || tipo === 'reservas') {
+            fechasContainer.show();
+            $('#fecha_inicio').attr('required', true);
+            $('#fecha_fin').attr('required', true);
+        } else {
+            fechasContainer.hide();
+            $('#fecha_inicio').removeAttr('required').val('');
+            $('#fecha_fin').removeAttr('required').val('');
+        }
+    });
+
+    
+    $('#tipo_informe').trigger('change');
+});
