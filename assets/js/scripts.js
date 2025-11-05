@@ -1,3 +1,53 @@
+//! variavez para todos lo inputs para no hacer lo mismo en todas
+$(document).ready(function () {
+  //? se selecciona todos los input que sean para nombre y apellido
+  //? de todas las vistas
+  $("input[type='text']#nombre, input[type='text']#apellido").on(
+    "input",
+    function () {
+      //? se obtinee los valores de los input en los que estamos
+      let valor = $(this).val();
+      let valorLimpio = valor.replace(/[^a-záéíóúñA-ZÁÉÍÓÚÑ\s]/g, "");
+      $(this).val(valorLimpio);
+    }
+  );
+
+  //* solo email válido 
+  $("input[type='email']#email").on("input", function () {
+    let valor = $(this).val();
+    let valorLimpio = valor.replace(/[^a-zA-Z0-9@._-]/g, "");
+    $(this).val(valorLimpio);
+  });
+
+  //* solo letras, números y espacios
+  $("#titulo, #autor").on("input", function () {
+    let valor = $(this).val();
+    let valorLimpio = valor.replace(/[^a-zA-Z0-9áéíóúñÁÉÍÓÚÑ\s.,:-]/g, "");
+    $(this).val(valorLimpio);
+  });
+
+  //* solo números y guiones 
+  $("#ISBN").on("input", function () {
+    let valor = $(this).val();
+    let valorLimpio = valor.replace(/[^0-9-]/g, "");
+    $(this).val(valorLimpio);
+  });
+
+  //* solo letras y espacios 
+  $("#categoria").on("input", function () {
+    let valor = $(this).val();
+    let valorLimpio = valor.replace(/[^a-záéíóúñA-ZÁÉÍÓÚÑ\s]/g, "");
+    $(this).val(valorLimpio);
+  });
+
+  //* solo números 
+  $("#cantidad, #disponibilidad").on("input", function () {
+    let valor = $(this).val();
+    let valorLimpio = valor.replace(/[^0-9]/g, "");
+    $(this).val(valorLimpio);
+  });
+});
+
 //* registrar empleado
 $(document).ready(function () {
   $("#formRegistro").submit(function (e) {
@@ -226,9 +276,9 @@ $(document).ready(function () {
             title: "Libro reservado",
             text: "¡Libro reservado exitosamente!",
             showConfirmButton: false,
-            timer: 1200
+            timer: 1200,
           }).then(() => {
-             window.location.href = "dashboard.php";
+            window.location.href = "dashboard.php";
           });
         } else {
           Swal.fire({
@@ -241,7 +291,6 @@ $(document).ready(function () {
     });
   });
 });
-
 
 //*datatable reservas - lo que ve el empleado
 $(document).ready(function () {
@@ -292,7 +341,7 @@ $(document).ready(function () {
                 title: "Libro devuelto",
                 text: "El libro fue marcado como devuelto.",
                 showConfirmButton: false,
-                timer: 1200
+                timer: 1200,
               }).then(() => {
                 location.reload();
               });
@@ -310,7 +359,6 @@ $(document).ready(function () {
   });
 });
 
-
 //* datatable de prestamos
 $(document).ready(function () {
   if ($.fn.DataTable) {
@@ -321,15 +369,6 @@ $(document).ready(function () {
       responsive: true,
     });
   }
-});
-
-//* generar informe PDF
-$("#btnPDF").on("click", function () {
-  let tipo = $("#tipo_informe").val();
-  let fecha_inicio = $("#fecha_inicio").val();
-  let fecha_fin = $("#fecha_fin").val();
-  let url = `../controllers/informes_controller.php?tipo=${tipo}&fecha_inicio=${fecha_inicio}&fecha_fin=${fecha_fin}`;
-  window.open(url, "_blank");
 });
 
 //* crear usuario
@@ -357,7 +396,7 @@ $(document).ready(function () {
             title: "Usuario creado",
             text: "¡Usuario creado exitosamente!",
             showConfirmButton: false,
-            timer: 1200
+            timer: 1200,
           }).then(() => {
             window.location.href = "gestionar_usuarios.php";
           });
@@ -372,7 +411,6 @@ $(document).ready(function () {
     });
   });
 });
-
 
 //* editar usuario
 $(document).ready(function () {
@@ -400,7 +438,7 @@ $(document).ready(function () {
             title: "Usuario editado",
             text: "¡Usuario editado exitosamente!",
             showConfirmButton: false,
-            timer: 1200
+            timer: 1200,
           }).then(() => {
             window.location.href = "gestionar_usuarios.php";
           });
@@ -441,7 +479,7 @@ $(document).ready(function () {
                 icon: "success",
                 title: "Usuario eliminado",
                 showConfirmButton: false,
-                timer: 1200
+                timer: 1200,
               }).then(() => {
                 location.reload();
               });
@@ -459,7 +497,6 @@ $(document).ready(function () {
   });
 });
 
-
 //* crear préstamo de reserva
 $(document).ready(function () {
   $(".btnCrearPrestamo").on("click", function () {
@@ -476,7 +513,7 @@ $(document).ready(function () {
             title: "Préstamo creado",
             text: "¡Préstamo creado exitosamente!",
             showConfirmButton: false,
-            timer: 1200
+            timer: 1200,
           }).then(() => {
             location.reload();
           });
@@ -491,7 +528,6 @@ $(document).ready(function () {
     });
   });
 });
-
 
 //* crear reserva
 $(document).ready(function () {
@@ -534,7 +570,7 @@ $(document).ready(function () {
             title: "Reserva aprobada",
             text: "La reserva fue aprobada correctamente.",
             showConfirmButton: false,
-            timer: 1200
+            timer: 1200,
           }).then(() => {
             location.reload();
           });
@@ -549,7 +585,6 @@ $(document).ready(function () {
     });
   });
 });
-
 
 //*rechazar reserva
 $(document).ready(function () {
@@ -567,7 +602,7 @@ $(document).ready(function () {
             title: "Reserva rechazada",
             text: "La reserva fue rechazada correctamente.",
             showConfirmButton: false,
-            timer: 1200
+            timer: 1200,
           }).then(() => {
             location.reload();
           });
@@ -582,7 +617,6 @@ $(document).ready(function () {
     });
   });
 });
-
 
 //* boton logout
 $(document).ready(function () {
@@ -646,7 +680,7 @@ $(document).ready(function () {
             title: "Perfil actualizado",
             text: "¡Perfil actualizado exitosamente!",
             showConfirmButton: false,
-            timer: 1200
+            timer: 1200,
           }).then(() => {
             window.location.href = "dashboard.php";
           });
@@ -662,60 +696,127 @@ $(document).ready(function () {
   });
 });
 
-//*generar informe excel
+//* generar informes PDF y Excel
+$(document).ready(function () {
+  //* validación en tiempo real de las fechas
+  //? el evento change es para que se sepa si uno de los dos campos de fechas cambio para verificar las y saber si son validas
+  $("#fecha_inicio, #fecha_fin").change(function () {
+    let fechaInicio = $("#fecha_inicio").val();
+    let fechaFin = $("#fecha_fin").val();
 
-$(document).ready(function() {
-    
-    $('#btnExcel').click(function() {
-        let tipo = $('#tipo_informe').val();
-        let fechaInicio = $('#fecha_inicio').val();
-        let fechaFin = $('#fecha_fin').val();
+    if (fechaInicio && fechaFin && fechaInicio > fechaFin) {
+      Swal.fire({
+        icon: "error",
+        title: "Rango de fechas inválido",
+        text: "La fecha de inicio no puede ser posterior a la fecha fin.",
+      });
+      //* limpiar el campo otros porque sino hay errores
+      $(this).val("");
+    }
+  });
 
-        //* validar fechas para informes que las requieren
-        if ((tipo === 'prestamos' || tipo === 'reservas') && (!fechaInicio || !fechaFin)) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Fechas requeridas',
-                text: 'Por favor seleccione un rango de fechas para este tipo de informe.'
-            });
-            return;
-        }
+  //* generar informe PDF
+  $("#btnPDF").on("click", function () {
+    let tipo = $("#tipo_informe").val();
+    let fechaInicio = $("#fecha_inicio").val();
+    let fechaFin = $("#fecha_fin").val();
 
-        //* hacer URL con parámetros
-        let url = `../controllers/informes_excel_controller.php?tipo=${tipo}`;
-        if (fechaInicio && fechaFin) {
-            url += `&fecha_inicio=${fechaInicio}&fecha_fin=${fechaFin}`;
-        }
+    //* validar fechas para informes que las requieren
+    if (
+      (tipo === "prestamos" || tipo === "reservas") &&
+      (!fechaInicio || !fechaFin)
+    ) {
+      Swal.fire({
+        icon: "warning",
+        title: "Fechas requeridas",
+        text: "Por favor seleccione un rango de fechas para este tipo de informe.",
+      });
+      return;
+    }
 
-        //* mostrar mensaje de descarga
-        Swal.fire({
-            icon: "success",
-            title: 'Generando Excel',
-            text: 'Su archivo se descargará en breve...',
-            timer: 2000,
-            showConfirmButton: false
-        });
+    //* validar que fecha inicio no sea posterior a fecha fin
+    if (fechaInicio && fechaFin && fechaInicio > fechaFin) {
+      Swal.fire({
+        icon: "error",
+        title: "Rango de fechas inválido",
+        text: "La fecha de inicio no puede ser posterior a la fecha fin.",
+      });
+      return;
+    }
 
-        //* descargar archivo Excel
-        window.location.href = url;
+    //* hacer URL
+    let url = `../controllers/informes_controller.php?tipo=${tipo}`;
+    if (fechaInicio && fechaFin) {
+      url += `&fecha_inicio=${fechaInicio}&fecha_fin=${fechaFin}`;
+    }
+
+    window.open(url, "_blank");
+  });
+
+  //* generar informe Excel
+  $("#btnExcel").click(function () {
+    let tipo = $("#tipo_informe").val();
+    let fechaInicio = $("#fecha_inicio").val();
+    let fechaFin = $("#fecha_fin").val();
+
+    //* validar fechas para informes que las requieren
+    if (
+      (tipo === "prestamos" || tipo === "reservas") &&
+      (!fechaInicio || !fechaFin)
+    ) {
+      Swal.fire({
+        icon: "warning",
+        title: "Fechas requeridas",
+        text: "Por favor seleccione un rango de fechas para este tipo de informe.",
+      });
+      return;
+    }
+
+    //* validar que fecha inicio no sea posterior a fecha fin
+    if (fechaInicio && fechaFin && fechaInicio > fechaFin) {
+      Swal.fire({
+        icon: "error",
+        title: "Rango de fechas inválido",
+        text: "La fecha de inicio no puede ser posterior a la fecha fin.",
+      });
+      return;
+    }
+
+    //* construir URL con parámetros
+    let url = `../controllers/informes_excel_controller.php?tipo=${tipo}`;
+    if (fechaInicio && fechaFin) {
+      url += `&fecha_inicio=${fechaInicio}&fecha_fin=${fechaFin}`;
+    }
+
+    //* mostrar mensaje de descarga
+    Swal.fire({
+      icon: "success",
+      title: "Generando Excel",
+      text: "Su archivo se descargará en breve...",
+      timer: 2000,
+      showConfirmButton: false,
     });
 
-    //? mostrar/ocultar campos de fecha según el tipo de informe
-    $('#tipo_informe').change(function() {
-        let tipo = $(this).val();
-        let fechasContainer = $('.row.mb-3');
-        
-        if (tipo === 'prestamos' || tipo === 'reservas') {
-            fechasContainer.show();
-            $('#fecha_inicio').attr('required', true);
-            $('#fecha_fin').attr('required', true);
-        } else {
-            fechasContainer.hide();
-            $('#fecha_inicio').removeAttr('required').val('');
-            $('#fecha_fin').removeAttr('required').val('');
-        }
-    });
+    //* descargar archivo Excel
+    window.location.href = url;
+  });
 
-    
-    $('#tipo_informe').trigger('change');
+  //* mostrar y ocultar campos de fecha según el tipo de informe
+  $("#tipo_informe").change(function () {
+    let tipo = $(this).val();
+    let fechasContainer = $(".row.mb-3");
+
+    if (tipo === "prestamos" || tipo === "reservas") {
+      fechasContainer.show();
+      $("#fecha_inicio").attr("required", true);
+      $("#fecha_fin").attr("required", true);
+    } else {
+      fechasContainer.hide();
+      $("#fecha_inicio").removeAttr("required").val("");
+      $("#fecha_fin").removeAttr("required").val("");
+    }
+  });
+
+  //* Inicializar visibilidad de fechas
+  $("#tipo_informe").trigger("change");
 });

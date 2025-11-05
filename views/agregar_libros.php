@@ -166,27 +166,27 @@ $admin = $_SESSION['tipo_usuario'] === 'administrador';
 
                 <div class="mb-3">
                     <label for="titulo" class="form-label">Título</label>
-                    <input type="text" class="form-control" id="titulo" placeholder="Ej: Cien años de soledad" required>
+                    <input type="text" class="form-control" id="titulo"  required>
                 </div>
 
                 <div class="mb-3">
                     <label for="autor" class="form-label">Autor</label>
-                    <input type="text" class="form-control" id="autor" placeholder="Ej: Gabriel García Márquez" required>
+                    <input type="text" class="form-control" id="autor"  required>
                 </div>
 
                 <div class="mb-3">
                     <label for="ISBN" class="form-label">ISBN</label>
-                    <input type="number" class="form-control" id="ISBN" placeholder="Ej: 9780307474728" required>
+                    <input type="number" class="form-control" id="ISBN"  required>
                 </div>
 
                 <div class="mb-3">
                     <label for="categoria" class="form-label">Categoría</label>
-                    <input type="text" class="form-control" id="categoria" placeholder="Ej: Novela, Historia, Ciencia..." required>
+                    <input type="text" class="form-control" id="categoria"  required>
                 </div>
 
                 <div class="mb-3">
                     <label for="cantidad" class="form-label">Cantidad</label>
-                    <input type="number" class="form-control" id="cantidad" placeholder="Ej: 5" min="1" required>
+                    <input type="number" class="form-control" id="cantidad"  min="1" required>
                 </div>
 
                 <div class="mb-3">

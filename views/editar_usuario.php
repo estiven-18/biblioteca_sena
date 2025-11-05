@@ -196,10 +196,10 @@ $mysql->desconectar();
                     </select>
                 </div>
 
-                <div class="mb-3">
+                <!-- <div class="mb-3">
                     <label for="password" class="form-label">Nueva Contraseña (opcional)</label>
                     <input type="password" class="form-control" id="password" placeholder="Deja en blanco si no deseas cambiarla">
-                </div>
+                </div> -->
 
                 <div class="d-flex justify-content-between mt-4">
                     <a href="gestionar_usuarios.php" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Cancelar</a>
