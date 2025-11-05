@@ -11,8 +11,19 @@ $mysql = new MySQL();
 $mysql->conectar();
 
 $tipo = $_GET['tipo'] ;
-$fecha_inicio = $_GET['fecha_inicio'];
-$fecha_fin = $_GET['fecha_fin'];
+
+if (isset($_GET['fecha_inicio'])) {
+    $fecha_inicio = $_GET['fecha_inicio'];
+} else {
+    $fecha_inicio = '';
+}
+
+if (isset($_GET['fecha_fin'])) {
+    $fecha_fin = $_GET['fecha_fin'];
+} else {
+    $fecha_fin = '';
+}
+
 
 
 
