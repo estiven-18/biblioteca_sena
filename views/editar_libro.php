@@ -185,10 +185,10 @@ $mysql->desconectar();
                     <input type="text" class="form-control" id="autor" value="<?php echo htmlspecialchars($libro['autor']); ?>" required>
                 </div>
 
-                <div class="mb-3">
+                <!-- <div class="mb-3">
                     <label for="ISBN" class="form-label">ISBN</label>
                     <input type="number" class="form-control" id="ISBN" value="<?php echo htmlspecialchars($libro['ISBN']); ?>" required>
-                </div>
+                </div> -->
 
                 <div class="mb-3">
                     <label for="categoria" class="form-label">Categoría</label>
