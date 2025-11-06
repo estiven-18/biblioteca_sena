@@ -2,9 +2,9 @@
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
-if (!isset($_SESSION['id_usuario']) || $_SESSION['tipo_usuario'] != 'administrador') {
-    header("Location: login.php");
-    exit();
+if (!isset($_SESSION['id_usuario']) || $_SESSION['tipo_usuario'] != 'administrador' || $_SESSION['activo'] != "activo") {
+  header("Location: login.php");
+  exit();
 }
 
 require_once '../models/MySQL.php';
