@@ -16,6 +16,7 @@ require_once '../models/MySQL.php';
 $mysql = new MySQL();
 $mysql->conectar();
 
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
     //* la accion la mando desde el front para saber que hacer
     //* reservar libro
@@ -24,21 +25,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
         $id_usuario = $_SESSION['id_usuario'];
         //* para obtener la fecha y hora actual
         $fecha_reserva = date('Y-m-d H:i:s');
-        //* Verificar si el libro está disponible porque si no no se puede reservar
-        $consultaDisponibilidad = "SELECT disponibilidad FROM libro WHERE id = $id_libro";
+        //* verificar si el libro está disponible  porque si no no se puede reservar
+        $consultaDisponibilidad = "SELECT disponibilidad, cantidad FROM libro WHERE id = $id_libro";
         $resultadoDisponibilidad = $mysql->efectuarConsulta($consultaDisponibilidad);
         $libro = mysqli_fetch_assoc($resultadoDisponibilidad);
         //* si el libro esta disponible se puede reservar
-        if ($libro['disponibilidad'] == 'Disponible') {
+       if ($libro['disponibilidad'] == 'Disponible' && $libro['cantidad'] > 0) {
+            //* crear la reserva
             $consulta = "INSERT INTO reserva (id_usuario, id_libro, fecha_reserva) VALUES ($id_usuario, $id_libro, '$fecha_reserva')";
             $resultado = $mysql->efectuarConsulta($consulta);
+            
             if ($resultado) {
+                //* restar 1 a la cantidad del libro
+                $mysql->efectuarConsulta("UPDATE libro SET cantidad = cantidad - 1 WHERE id = $id_libro");
+                
+                //* si la cantidad llega a 0, cambiar disponibilidad a 'No disponible'
+                $mysql->efectuarConsulta("UPDATE libro SET disponibilidad = 'No disponible' WHERE id = $id_libro AND cantidad = 0");
+                
                 echo json_encode(["status" => "success"]);
             } else {
                 echo json_encode(["status" => "error", "message" => "Error al reservar"]);
             }
         } else {
-            echo json_encode(["status" => "error", "message" => "Libro no disponible"]);
+            echo json_encode(["status" => "error", "message" => "Libro no disponible o sin existencias"]);
         }
     } elseif ($_POST['accion'] == 'aprobar') {
         $id = $_POST['id'];
@@ -46,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
         $consulta = "UPDATE reserva SET estado = 'aprobada' WHERE id = $id";
         $resultado = $mysql->efectuarConsulta($consulta);
         if ($resultado) {
-            // Enviar email de confirmación
+            //* enviar email de confirmación
             $consultaEmail = "SELECT usuario.email, libro.titulo FROM reserva JOIN usuario ON reserva.id_usuario = usuario.id JOIN libro ON reserva.id_libro = libro.id WHERE reserva.id = $id";
             $resultadoEmail = $mysql->efectuarConsulta($consultaEmail);
 
@@ -62,16 +71,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
             echo json_encode(["status" => "error", "message" => "Error al aprobar"]);
         }
     } elseif ($_POST['accion'] == 'rechazar') {
-        //* lo que hace es que pone la reserva como rechazada y no se puede crear el prestamo
         $id = $_POST['id'];
+        
+        //* obtener el id del libro antes de rechazar para devolver la cantidad
+        $consultaLibro = "SELECT id_libro FROM reserva WHERE id = $id";
+        $resultadoLibro = $mysql->efectuarConsulta($consultaLibro);
+        $reserva = mysqli_fetch_assoc($resultadoLibro);
+        $id_libro = $reserva['id_libro'];
+        
+        //* rechazar la reserva
         $consulta = "UPDATE reserva SET estado = 'rechazada' WHERE id = $id";
         $resultado = $mysql->efectuarConsulta($consulta);
+        
         if ($resultado) {
+            //* devolver 1 libro a la cantidad 
+            $mysql->efectuarConsulta("UPDATE libro SET cantidad = cantidad + 1 WHERE id = $id_libro");
+            
+            //* si había cantidad 0 y ahora hay 1 o más, cambiar a 'Disponible'
+            $mysql->efectuarConsulta("UPDATE libro SET disponibilidad = 'Disponible' WHERE id = $id_libro AND cantidad > 0");
+            
             echo json_encode(["status" => "success"]);
         } else {
             echo json_encode(["status" => "error", "message" => "Error al rechazar"]);
         }
     } elseif ($_POST['accion'] == 'crear_prestamo') {
+        
         //* lo que hace es que crea el prestamo con la fecha actual y la fecha de devolucion es 10 dias despues
         $id_reserva = $_POST['id_reserva'];
         $fecha_prestamo = date('Y-m-d H:i:s');
@@ -80,8 +104,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
 
         $consulta = "INSERT INTO prestamo (id_reserva, fecha_prestamo, fecha_devolucion) VALUES ($id_reserva, '$fecha_prestamo', '$fecha_devolucion')";
         $resultado = $mysql->efectuarConsulta($consulta);
+
+        
+        $consulta = "UPDATE reserva SET estado = 'creado' WHERE id = $id_reserva";
+        $resultado = $mysql->efectuarConsulta($consulta);
         if ($resultado) {
             // ! revisar porque si hay mas de un libro de igual forma lo pone como no disponible sabiendo que puede haber mas de un libro
+             // ! revisar porque si hay mas de un libro de igual forma lo pone como no disponible sabiendo que puede haber mas de un libro
+              // ! revisar porque si hay mas de un libro de igual forma lo pone como no disponible sabiendo que puede haber mas de un libro
+               // ! revisar porque si hay mas de un libro de igual forma lo pone como no disponible sabiendo que puede haber mas de un libro
             $mysql->efectuarConsulta("UPDATE libro SET disponibilidad = 'No disponible' WHERE id = (SELECT id_libro FROM reserva WHERE id = $id_reserva)");
             //* enviar email de confirmación de prestamo craedo
             $consultaEmail = "SELECT usuario.email, libro.titulo FROM reserva JOIN usuario ON reserva.id_usuario = usuario.id JOIN libro ON reserva.id_libro = libro.id WHERE reserva.id = $id_reserva";
