@@ -13,7 +13,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
     $accion = $_POST['accion'];
 
     //* agregar libro
-
     if ($accion == 'agregar') {
         $titulo = filter_var($_POST['titulo'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $autor = filter_var($_POST['autor'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -32,8 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
         }
 
         //*para verificar que el isbn no es repetido
-        $consulta = "INSERT INTO libro (titulo, autor, ISBN, categoria, cantidad, disponibilidad) 
-                 VALUES ('$titulo', '$autor', '$ISBN', '$categoria', $cantidad, '$disponibilidad')";
+        $consulta = "INSERT INTO libro (titulo, autor, ISBN, categoria, cantidad, disponibilidad) VALUES ('$titulo', '$autor', '$ISBN', '$categoria', $cantidad, '$disponibilidad')";
         $resultado = $mysql->efectuarConsulta($consulta);
 
         if ($resultado) {
@@ -41,7 +39,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
         } else {
             echo json_encode(["status" => "error", "message" => "Error al agregar el libro"]);
         }
+
+
+
     } elseif ($accion == 'editar') {
+
+
         $id = filter_var($_POST['id'], FILTER_SANITIZE_NUMBER_INT);
         $titulo = filter_var($_POST['titulo'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $autor = filter_var($_POST['autor'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -58,8 +61,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
         } else {
             echo json_encode(["status" => "error", "message" => "Error al editar el libro"]);
         }
+
+        
         //* eliminar libro
     } elseif ($accion == 'eliminar') {
+
         $id = $_POST['id'];
 
         $consulta = "UPDATE LIBRO set disponibilidad='No disponible'   WHERE id=$id";

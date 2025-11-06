@@ -837,4 +837,4 @@ $(document).ready(function () {
 
   //* Inicializar visibilidad de fechas
   $("#tipo_informe").trigger("change");
-})
+});
