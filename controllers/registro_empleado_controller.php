@@ -8,8 +8,8 @@ $mysql = new MySQL();
 $mysql->conectar();
 
 if (isset($_POST['nombre']) && isset($_POST['email']) && isset($_POST['password'])) {
-    $nombre = filter_var( $_POST['nombre'],FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $apellido = filter_var( $_POST['apellido'],FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $nombre = filter_var($_POST['nombre'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $apellido = filter_var($_POST['apellido'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     $email = $_POST['email'];
     $email = filter_var(trim($email), FILTER_SANITIZE_EMAIL);
@@ -19,7 +19,17 @@ if (isset($_POST['nombre']) && isset($_POST['email']) && isset($_POST['password'
     //*se va a poner por defecto cliente
     $tipo = 'cliente';
 
-    $consulta = "INSERT INTO usuario (nombre, apellido, email, contrasena, tipo) VALUES ('$nombre', '$apellido', '$email', '$password', '$tipo')";
+
+
+    $consultaEmail = "SELECT id FROM usuario WHERE email = '$email'";
+    $resultadoEmail = $mysql->efectuarConsulta($consultaEmail);
+
+    if (mysqli_num_rows($resultadoEmail) > 0) {
+        echo json_encode(["status" => "duplicado"]);
+        exit();
+    }
+
+    $consulta = "INSERT INTO usuario (nombre, apellido, email, contrasena, tipo, activo) VALUES ('$nombre', '$apellido', '$email', '$password', '$tipo' ,activo='activo')";
     $resultado = $mysql->efectuarConsulta($consulta);
     if ($resultado) {
         echo json_encode(["status" => "success"]);
