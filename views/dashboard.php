@@ -4,11 +4,12 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 }
 
 
-if (!isset($_SESSION['id_usuario'])) {
-  header("Location: login.php");
+
+if (!isset($_SESSION['id_usuario']) || $_SESSION['activo'] != "activo") {
+  session_destroy();
+  header("Location: login.php?error=inactivo");
   exit();
 }
-
 require_once '../models/MySQL.php';
 $mysql = new MySQL();
 $mysql->conectar();
@@ -28,7 +29,7 @@ if ($admin) {
   $consultaReservas = "SELECT COUNT(*) AS total_reservas FROM reserva";
 
   $resultadoUsuarios = $mysql->efectuarConsulta($consultaUsuarios);
-$estadisticasUsuarios = mysqli_fetch_assoc($resultadoUsuarios);
+  $estadisticasUsuarios = mysqli_fetch_assoc($resultadoUsuarios);
 } else {
   //* estas son las estadisticas que le van a salir al cliente, dependiendo de quien sea
 
@@ -39,7 +40,7 @@ $estadisticasUsuarios = mysqli_fetch_assoc($resultadoUsuarios);
   $consultaReservas = "SELECT COUNT(*) AS total_reservas FROM reserva WHERE id_usuario = $id_usuario";
 
 
-   $consultaMisReservas = "
+  $consultaMisReservas = "
         SELECT libro.titulo, reserva.fecha_reserva, reserva.estado
         FROM reserva
         JOIN libro ON reserva.id_libro = libro.id
@@ -190,7 +191,7 @@ $mysql->desconectar();
             <a href="historial_reservas.php" class="nav-link "><i class="bi bi-calendar-range me-2"></i>Historial Reservas</a>
           <?php else: ?>
             <a href="historial_prestamos.php" class="nav-link "><i class="bi bi-clock-history me-2"></i>Historial Prestamos</a>
-            <a href="historial_reservas.php" class="nav-link "><i class="bi bi-calendar-range me-2"></i>Historial Reservas</a>
+            <!-- <a href="historial_reservas.php" class="nav-link "><i class="bi bi-calendar-range me-2"></i>Historial Reservas</a> -->
             <a href="perfil.php" class="nav-link"><i class="bi  bi-person-circle me-2"></i>Perfil</a>
           <?php endif; ?>
         </nav>
@@ -201,6 +202,8 @@ $mysql->desconectar();
         <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
         </a></button>
     </div>
+
+    
 
 
 
@@ -246,7 +249,7 @@ $mysql->desconectar();
               <h3 class="fw-bold text-warning"><?php echo $estadisticasUsuarios['total_usuarios']; ?></h3>
             </div>
           </div>
-          
+
         <?php endif; ?>
       </div>
 
