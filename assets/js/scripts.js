@@ -1,3 +1,4 @@
+
 //! variavez para todos lo inputs para no hacer lo mismo en todas
 $(document).ready(function () {
   //? se selecciona todos los input que sean para nombre y apellido
@@ -12,7 +13,7 @@ $(document).ready(function () {
     }
   );
 
-  //* solo email válido 
+  //* solo email válido
   $("input[type='email']#email").on("input", function () {
     let valor = $(this).val();
     let valorLimpio = valor.replace(/[^a-zA-Z0-9@._-]/g, "");
@@ -26,21 +27,21 @@ $(document).ready(function () {
     $(this).val(valorLimpio);
   });
 
-  //* solo números y guiones 
+  //* solo números y guiones
   $("#ISBN").on("input", function () {
     let valor = $(this).val();
     let valorLimpio = valor.replace(/[^0-9-]/g, "");
     $(this).val(valorLimpio);
   });
 
-  //* solo letras y espacios 
+  //* solo letras y espacios
   $("#categoria").on("input", function () {
     let valor = $(this).val();
     let valorLimpio = valor.replace(/[^a-záéíóúñA-ZÁÉÍÓÚÑ\s]/g, "");
     $(this).val(valorLimpio);
   });
 
-  //* solo números 
+  //* solo números
   $("#cantidad, #disponibilidad").on("input", function () {
     let valor = $(this).val();
     let valorLimpio = valor.replace(/[^0-9]/g, "");
@@ -73,6 +74,12 @@ $(document).ready(function () {
             text: "Tu cuenta ha sido creada correctamente",
           }).then(() => {
             window.location.href = "login.php";
+          });
+        } else if (respuesta.status === "duplicado") {
+          Swal.fire({
+            icon: "warning",
+            title: "Correo ya registrado",
+            text: "Este correo ya pertenece a otro usuario.",
           });
         } else {
           Swal.fire({
@@ -423,7 +430,6 @@ $(document).ready(function () {
       apellido: $("#apellido").val(),
       email: $("#email").val(),
       tipo: $("#tipo").val(),
-      password: $("#password").val(),
     };
 
     $.ajax({
@@ -441,6 +447,12 @@ $(document).ready(function () {
             timer: 1200,
           }).then(() => {
             window.location.href = "gestionar_usuarios.php";
+          });
+        } else if (respuesta.status === "duplicado") {
+          Swal.fire({
+            icon: "warning",
+            title: "Correo ya registrado",
+            text: "Este correo ya pertenece a otro usuario.",
           });
         } else {
           Swal.fire({
@@ -684,6 +696,12 @@ $(document).ready(function () {
           }).then(() => {
             window.location.href = "dashboard.php";
           });
+        } else if (respuesta.status === "duplicado") {
+          Swal.fire({
+            icon: "warning",
+            title: "Correo ya registrado",
+            text: "Este correo ya pertenece a otro usuario.",
+          });
         } else {
           Swal.fire({
             icon: "error",
@@ -819,4 +837,4 @@ $(document).ready(function () {
 
   //* Inicializar visibilidad de fechas
   $("#tipo_informe").trigger("change");
-});
+})
