@@ -4,9 +4,9 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 }
 
 
-if (!isset($_SESSION['id_usuario']) || $_SESSION['tipo_usuario'] != 'administrador') {
-    header("Location: login.php");
-    exit();
+if (!isset($_SESSION['id_usuario']) || $_SESSION['tipo_usuario'] != 'administrador' || $_SESSION['activo'] != "activo") {
+  header("Location: login.php");
+  exit();
 }
 $admin = $_SESSION['tipo_usuario'] === 'administrador';
 ?>
@@ -166,27 +166,27 @@ $admin = $_SESSION['tipo_usuario'] === 'administrador';
 
                 <div class="mb-3">
                     <label for="titulo" class="form-label">Título</label>
-                    <input type="text" class="form-control" id="titulo"  required>
+                    <input type="text" class="form-control" id="titulo" placeholder="Título" required>
                 </div>
 
                 <div class="mb-3">
                     <label for="autor" class="form-label">Autor</label>
-                    <input type="text" class="form-control" id="autor"  required>
+                    <input type="text" class="form-control" id="autor" placeholder="Autor" required>
                 </div>
 
                 <div class="mb-3">
                     <label for="ISBN" class="form-label">ISBN</label>
-                    <input type="number" class="form-control" id="ISBN"  required>
+                    <input type="number" class="form-control" id="ISBN" placeholder="ISBN"  required>
                 </div>
 
                 <div class="mb-3">
                     <label for="categoria" class="form-label">Categoría</label>
-                    <input type="text" class="form-control" id="categoria"  required>
+                    <input type="text" class="form-control" id="categoria" placeholder="Categoría"  required>
                 </div>
 
                 <div class="mb-3">
                     <label for="cantidad" class="form-label">Cantidad</label>
-                    <input type="number" class="form-control" id="cantidad"  min="1" required>
+                    <input type="number" class="form-control" id="cantidad" placeholder="Cantidad"  min="1" required>
                 </div>
 
                 <div class="mb-3">
