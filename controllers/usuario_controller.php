@@ -26,13 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
             exit;
         }
 
-
-         
-
-
-
-
-        $consulta = "INSERT INTO usuario (nombre, apellido, email, contrasena, tipo) VALUES ('$nombre', '$apellido', '$email', '$password', '$tipo')";
+        $consulta = "INSERT INTO usuario (nombre, apellido, email, contrasena, tipo, activo) VALUES ('$nombre', '$apellido', '$email', '$password', '$tipo',activo='activo')";
         $resultado = $mysql->efectuarConsulta($consulta);
         if ($resultado) {
             echo json_encode(["status" => "success"]);
@@ -47,18 +41,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
         $email = $_POST['email'];
         $email = filter_var(trim($email), FILTER_SANITIZE_EMAIL);
         $tipo = $_POST['tipo'];
-        $password = $_POST['password'];
+        
+        $consultaEmail = "SELECT id FROM usuario WHERE email = '$email' AND id != $id";
+        $resultadoEmail = $mysql->efectuarConsulta($consultaEmail);
 
-        $consulta = "UPDATE usuario SET nombre = '$nombre', apellido = '$apellido', email = '$email', tipo = '$tipo'";
-        //* se pone empty para que no de error si no se envia nada en el campo password
-        if ($password != "") {
-
-            $password_hash = password_hash($password, PASSWORD_DEFAULT);
-            //* tiene el . para concatenar la consulta por si se envia el password
-            $consulta .= ", contrasena = '$password_hash'";
+        if (mysqli_num_rows($resultadoEmail) > 0) {
+            echo json_encode(["status" => "duplicado"]);
+            exit();
         }
-        //* se connecta la consulta con el id del usuario a editar
-        $consulta .= " WHERE id = $id";
+
+        $consulta = "UPDATE usuario SET nombre = '$nombre', apellido = '$apellido', email = '$email', tipo = '$tipo'  WHERE id = $id";
+        
 
         $resultado = $mysql->efectuarConsulta($consulta);
         if ($resultado) {
@@ -69,15 +62,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
         //* eliminar 
     } elseif ($_POST['accion'] == 'eliminar') {
         $id = $_POST['id'];
-        $consulta = "UPDATE usuario SET contrasena='ñ(ZJDl-SW3D,.' WHERE id = $id";
 
-        $resultado = $mysql->efectuarConsulta($consulta);
-        if ($resultado) {
+        $consultaUsuario = "UPDATE usuario SET activo = 'inactivo' WHERE id = $id";
+        $resultadoUsuario = $mysql->efectuarConsulta($consultaUsuario);
+
+        //* rechazar reservas activas del usuario
+        $consultaReservas = "UPDATE reserva SET estado = 'rechazada' WHERE id_usuario = $id ";
+        $mysql->efectuarConsulta($consultaReservas);
+
+        //* marcar prestamos activos como devueltos y devolver libros
+        $consultaPrestamos = "UPDATE prestamo SET estado = 'devuelto', fecha_devolucion = CURDATE() WHERE id_reserva IN (SELECT id FROM reserva WHERE id_usuario = $id) AND estado = 'activo'";
+        $mysql->efectuarConsulta($consultaPrestamos);
+
+        //* actualizar disponibilidad de libros
+        $consultaLibros = "UPDATE libro SET disponibilidad = 'Disponible' WHERE id IN (SELECT id_libro FROM reserva WHERE id_usuario = $id AND id IN (SELECT id_reserva FROM prestamo WHERE estado = 'devuelto'))";
+        $mysql->efectuarConsulta($consultaLibros);
+
+        if ($resultadoUsuario) {
             echo json_encode(["status" => "success"]);
         } else {
-            echo json_encode(["status" => "error", "message" => "Error al eliminar usuario"]);
+            echo json_encode(["status" => "error", "message" => "Error al desactivar usuario"]);
         }
-        //? edita el perfil del usuario- es decir el mismo lo hace 
     } elseif ($_POST['accion'] == 'editar_perfil') {
         $id = $_POST['id'];
         $nombre = filter_var($_POST['nombre'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -85,6 +90,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
         $email = $_POST['email'];
         $email = filter_var(trim($email), FILTER_SANITIZE_EMAIL);
         $password = $_POST['password'];
+
+        $consultaEmail = "SELECT id FROM usuario WHERE email = '$email' AND id != $id";
+        $resultadoEmail = $mysql->efectuarConsulta($consultaEmail);
+
+        if (mysqli_num_rows($resultadoEmail) > 0) {
+            echo json_encode(["status" => "duplicado"]);
+            exit();
+        }
 
         $consulta = "UPDATE usuario SET nombre = '$nombre', apellido = '$apellido', email = '$email'";
         if ($password != "") {
