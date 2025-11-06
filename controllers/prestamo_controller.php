@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
         $id = $_POST['id'];
         //* lo que hace es que pone el prestamo como devuelto y el libro como disponible 
         //! pero hay que si hay 1 en stock y se debuelve, pues lo que hay que hace es aumentar el stock en 1
-        $consulta = "UPDATE prestamo SET estado = 'devuelto' WHERE id = $id";
+        $consulta = "UPDATE prestamo SET estado = 'devuelto', fecha_devolucion = CURDATE() WHERE id = $id";
         $resultado = $mysql->efectuarConsulta($consulta);
         if ($resultado) {
             //* marcar libro como disponible
