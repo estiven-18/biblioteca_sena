@@ -109,11 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
         $consulta = "UPDATE reserva SET estado = 'creado' WHERE id = $id_reserva";
         $resultado = $mysql->efectuarConsulta($consulta);
         if ($resultado) {
-            // ! revisar porque si hay mas de un libro de igual forma lo pone como no disponible sabiendo que puede haber mas de un libro
-             // ! revisar porque si hay mas de un libro de igual forma lo pone como no disponible sabiendo que puede haber mas de un libro
-              // ! revisar porque si hay mas de un libro de igual forma lo pone como no disponible sabiendo que puede haber mas de un libro
-               // ! revisar porque si hay mas de un libro de igual forma lo pone como no disponible sabiendo que puede haber mas de un libro
-            $mysql->efectuarConsulta("UPDATE libro SET disponibilidad = 'No disponible' WHERE id = (SELECT id_libro FROM reserva WHERE id = $id_reserva)");
+            
             //* enviar email de confirmación de prestamo craedo
             $consultaEmail = "SELECT usuario.email, libro.titulo FROM reserva JOIN usuario ON reserva.id_usuario = usuario.id JOIN libro ON reserva.id_libro = libro.id WHERE reserva.id = $id_reserva";
             $resultadoEmail = $mysql->efectuarConsulta($consultaEmail);

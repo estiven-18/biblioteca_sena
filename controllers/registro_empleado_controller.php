@@ -8,8 +8,8 @@ $mysql = new MySQL();
 $mysql->conectar();
 
 if (isset($_POST['nombre']) && isset($_POST['email']) && isset($_POST['password'])) {
-    $nombre = filter_var($_POST['nombre'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $apellido = filter_var($_POST['apellido'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $nombre = filter_var($_POST['nombre'], FILTER_SANITIZE_SPECIAL_CHARS);
+    $apellido = filter_var($_POST['apellido'], FILTER_SANITIZE_SPECIAL_CHARS);
 
     $email = $_POST['email'];
     $email = filter_var(trim($email), FILTER_SANITIZE_EMAIL);

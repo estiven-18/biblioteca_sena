@@ -14,12 +14,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
 
     //* agregar libro
     if ($accion == 'agregar') {
-        $titulo = filter_var($_POST['titulo'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $autor = filter_var($_POST['autor'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $titulo = filter_var($_POST['titulo'], FILTER_SANITIZE_SPECIAL_CHARS);
+        $autor = filter_var($_POST['autor'], FILTER_SANITIZE_SPECIAL_CHARS);
         $ISBN = filter_var($_POST['ISBN'], FILTER_SANITIZE_NUMBER_INT);
-        $categoria = filter_var($_POST['categoria'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $categoria = filter_var($_POST['categoria'], FILTER_SANITIZE_SPECIAL_CHARS);
         $cantidad = filter_var($_POST['cantidad'], FILTER_SANITIZE_NUMBER_INT);
-        $disponibilidad = filter_var($_POST['disponibilidad'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $disponibilidad = filter_var($_POST['disponibilidad'], FILTER_SANITIZE_SPECIAL_CHARS);
 
         
         $verificarISBN = "SELECT id FROM libro WHERE ISBN = '$ISBN'";
@@ -46,11 +46,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
 
 
         $id = filter_var($_POST['id'], FILTER_SANITIZE_NUMBER_INT);
-        $titulo = filter_var($_POST['titulo'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $autor = filter_var($_POST['autor'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $titulo = filter_var($_POST['titulo'], FILTER_SANITIZE_SPECIAL_CHARS);
+        $autor = filter_var($_POST['autor'], FILTER_SANITIZE_SPECIAL_CHARS);
         // $ISBN = filter_var($_POST['ISBN'], FILTER_SANITIZE_NUMBER_INT);
-        $categoria = filter_var($_POST['categoria'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $disponibilidad = filter_var($_POST['disponibilidad'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $categoria = filter_var($_POST['categoria'], FILTER_SANITIZE_SPECIAL_CHARS);
+        $disponibilidad = filter_var($_POST['disponibilidad'], FILTER_SANITIZE_SPECIAL_CHARS);
         $cantidad = filter_var($_POST['cantidad'], FILTER_SANITIZE_NUMBER_INT);
 
         $consulta = "UPDATE libro SET titulo='$titulo', autor='$autor', categoria='$categoria',disponibilidad='$disponibilidad', cantidad=$cantidad WHERE id=$id";

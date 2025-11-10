@@ -12,6 +12,7 @@ $mysql->conectar();
 
 $tipo = $_GET['tipo'] ;
 
+
 if (isset($_GET['fecha_inicio'])) {
     $fecha_inicio = $_GET['fecha_inicio'];
 } else {

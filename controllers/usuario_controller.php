@@ -10,8 +10,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
     //* la accion la mando desde el front para saber que hacer 
     //* crear
     if ($_POST['accion'] == 'crear') {
-        $nombre = filter_var($_POST['nombre'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $apellido = filter_var($_POST['apellido'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $nombre = filter_var($_POST['nombre'], FILTER_SANITIZE_SPECIAL_CHARS);
+        $apellido = filter_var($_POST['apellido'], FILTER_SANITIZE_SPECIAL_CHARS);
         $email = $_POST['email'];
         $email = filter_var(trim($email), FILTER_SANITIZE_EMAIL);
         $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
@@ -36,8 +36,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
         //* editar el usuario pero el admin lo edita
     } elseif ($_POST['accion'] == 'editar') {
         $id = $_POST['id'];
-        $nombre = filter_var($_POST['nombre'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $apellido = filter_var($_POST['apellido'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $nombre = filter_var($_POST['nombre'], FILTER_SANITIZE_SPECIAL_CHARS);
+        $apellido = filter_var($_POST['apellido'], FILTER_SANITIZE_SPECIAL_CHARS);
         $email = $_POST['email'];
         $email = filter_var(trim($email), FILTER_SANITIZE_EMAIL);
         $tipo = $_POST['tipo'];
@@ -71,6 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
         $mysql->efectuarConsulta($consultaReservas);
 
         //* marcar prestamos activos como devueltos y devolver libros
+        //!
         $consultaPrestamos = "UPDATE prestamo SET estado = 'devuelto', fecha_devolucion = CURDATE() WHERE id_reserva IN (SELECT id FROM reserva WHERE id_usuario = $id) AND estado = 'activo'";
         $mysql->efectuarConsulta($consultaPrestamos);
 
@@ -85,8 +86,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
         }
     } elseif ($_POST['accion'] == 'editar_perfil') {
         $id = $_POST['id'];
-        $nombre = filter_var($_POST['nombre'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $apellido = filter_var($_POST['apellido'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $nombre = filter_var($_POST['nombre'], FILTER_SANITIZE_SPECIAL_CHARS);
+        $apellido = filter_var($_POST['apellido'], FILTER_SANITIZE_SPECIAL_CHARS);
         $email = $_POST['email'];
         $email = filter_var(trim($email), FILTER_SANITIZE_EMAIL);
         $password = $_POST['password'];
