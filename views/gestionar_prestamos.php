@@ -130,7 +130,6 @@ $mysql->desconectar();
             width: 100% !important;
         }
 
-        /* Resaltar fila vencida */
         .fila-vencida {
             background-color: #ffe6e6 !important;
         }
@@ -202,7 +201,7 @@ $mysql->desconectar();
                             //* se mira si el pretamo esta vencido
                             $estaVencido = $prestamo['fecha_devolucion'] < $hoy;
 
-                            ?>
+                        ?>
                             <tr>
                                 <td><?php echo $prestamo['id']; ?></td>
                                 <td><?php echo htmlspecialchars($prestamo['nombre']); ?>

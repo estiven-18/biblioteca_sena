@@ -120,7 +120,6 @@ $admin = $_SESSION['tipo_usuario'] === 'administrador';
 <body>
     <div class="dashboard-container">
 
-        <!-- //*barra lateral -->
         <div class="sidebar">
             <div>
                 <h5 class="mb-4 d-flex align-items-center"><i class="bi bi-book-half me-2"></i>Biblioteca Sena</h5>
@@ -142,13 +141,11 @@ $admin = $_SESSION['tipo_usuario'] === 'administrador';
                 </nav>
             </div>
 
-            <!--//! organizar y poner en todas las views -->
             <button class="btn logout-btn w-100 mt-4 btnLogout">
                 <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
                 </a></button>
         </div>
 
-        <!-- //*contenido principal -->
         <div class="content">
             <div class="content-header mb-4">
                 <div>
@@ -160,7 +157,6 @@ $admin = $_SESSION['tipo_usuario'] === 'administrador';
                 </div>
             </div>
 
-            <!-- //* formularios -->
             <form id="formAgregarLibro">
                 <h4 class="mb-4"><i class="bi bi-journal-bookmark me-2"></i> Datos del Libro</h4>
 

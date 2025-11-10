@@ -17,10 +17,7 @@ $resultado = $mysql->efectuarConsulta($consulta);
 $usuario = mysqli_fetch_assoc($resultado);
 $mysql->desconectar();
 
-// if (!$usuario) {
-//     header("Location: gestionar_usuarios.php");
-//     exit();
-// }
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -150,7 +147,6 @@ $mysql->desconectar();
                 </nav>
             </div>
 
-            <!--//! organizar y poner en todas las views -->
             <button class="btn logout-btn w-100 mt-4 btnLogout">
                 <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
                 </a></button>

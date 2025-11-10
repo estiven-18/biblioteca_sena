@@ -197,17 +197,10 @@ $mysql->desconectar();
         </nav>
       </div>
 
-      <!--//! organizar y poner en todas las views -->
       <button class="btn logout-btn w-100 mt-4 btnLogout">
         <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
         </a></button>
     </div>
-
-    
-
-
-
-
 
 
     <div class="content">
@@ -220,8 +213,6 @@ $mysql->desconectar();
           <i class="bi bi-person-circle me-2"></i><?php echo ($_SESSION['tipo_usuario']); ?>
         </div>
       </div>
-
-
 
       <div class="row g-4 mb-5 d-flex justify-content-center align-items-center">
         <div class="col-md-6 col-lg-3">
@@ -239,8 +230,6 @@ $mysql->desconectar();
           </div>
         </div>
 
-
-
         <?php if ($admin): ?>
           <div class="col-md-6 col-lg-3">
             <div class="card-dashboard">
@@ -252,8 +241,6 @@ $mysql->desconectar();
 
         <?php endif; ?>
       </div>
-
-
 
       <?php if (!$admin): ?>
         <div class="d-flex justify-content-between align-items-center mb-3">

@@ -124,7 +124,6 @@ if (!isset($_SESSION['id_usuario']) || $_SESSION['tipo_usuario'] != 'administrad
         <h5 class="mb-4 d-flex align-items-center"><i class="bi bi-book-half me-2"></i>Biblioteca Sena</h5>
         <nav class="nav flex-column">
           <a href="dashboard.php" class="nav-link "><i class="bi bi-house me-2"></i>Dashboard</a>
-
           <a href="gestionar_libros.php" class="nav-link"><i class="bi bi-journal-bookmark me-2"></i>Libros</a>
           <a href="gestionar_reservas.php" class="nav-link"><i class="bi bi-calendar-check me-2"></i>Reservas</a>
           <a href="gestionar_prestamos.php" class="nav-link"><i class="bi bi-box-seam me-2"></i>Préstamos</a>
@@ -136,7 +135,6 @@ if (!isset($_SESSION['id_usuario']) || $_SESSION['tipo_usuario'] != 'administrad
         </nav>
       </div>
 
-      <!--//! organizar y poner en todas las views -->
       <button class="btn logout-btn w-100 mt-4 btnLogout">
         <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
         </a></button>
@@ -182,7 +180,6 @@ if (!isset($_SESSION['id_usuario']) || $_SESSION['tipo_usuario'] != 'administrad
               <i class="bi bi-filetype-pdf me-2"></i>Generar PDF
             </button>
 
-            <!--//! no sirveeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee -->
             <button type="button" id="btnExcel" class="btn btn-success">
               <i class="bi bi-filetype-xlsx me-2"></i>Exportar Excel
             </button>

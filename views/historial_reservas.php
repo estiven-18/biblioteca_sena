@@ -4,9 +4,9 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 }
 
 if (!isset($_SESSION['id_usuario']) || $_SESSION['activo'] != "activo") {
-  session_destroy();
-  header("Location: login.php?error=inactivo");
-  exit();
+    session_destroy();
+    header("Location: login.php?error=inactivo");
+    exit();
 }
 
 require_once '../models/MySQL.php';
@@ -42,8 +42,6 @@ $mysql->desconectar();
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= $admin ? 'Historial de Reservas | Biblioteca Sena' : 'Mis Reservas | Biblioteca Sena'; ?></title>
-
-    <!-- Bootstrap & DataTables -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
@@ -186,7 +184,7 @@ $mysql->desconectar();
                                 <td><?= $reserva['id']; ?></td>
                                 <td><?= htmlspecialchars($reserva['titulo']); ?></td>
                                 <td><?= $reserva['fecha_reserva']; ?></td>
-                                <td><span class="badge bg-<?php echo $reserva['estado'] == 'pendiente' ? 'warning' : ($reserva['estado'] == 'aprobada' ? 'success' : ($reserva['estado'] == 'creado' ? 'info' : 'danger'));?>">
+                                <td><span class="badge bg-<?php echo $reserva['estado'] == 'pendiente' ? 'warning' : ($reserva['estado'] == 'aprobada' ? 'success' : ($reserva['estado'] == 'creado' ? 'info' : 'danger')); ?>">
                                         <?php echo ucfirst($reserva['estado']); ?></span>
                                 </td>
                             </tr>

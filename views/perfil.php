@@ -189,7 +189,6 @@ $admin = $_SESSION['tipo_usuario'] === 'administrador';
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../assets/js/scripts.js"></script>
 
-
 </body>
 
 </html>

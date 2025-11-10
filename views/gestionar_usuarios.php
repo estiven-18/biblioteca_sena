@@ -146,7 +146,6 @@ $mysql->desconectar();
                 </nav>
             </div>
 
-            <!--//! organizar y poner en todas las views -->
             <button class="btn logout-btn w-100 mt-4 btnLogout">
                 <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
                 </a></button>
@@ -215,8 +214,6 @@ $mysql->desconectar();
     <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../assets/js/scripts.js"></script>
-
-
 
 </body>
 

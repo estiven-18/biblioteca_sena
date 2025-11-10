@@ -134,9 +134,8 @@ function enviarEmail($destinatario, $asunto, $mensaje)
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        //! poner los verdadesros
-        $mail->Username = 'pruebaadso2025@gmail.com';  //! poner  con tu email
-        $mail->Password = 'aypi xyao docb utjv';  //! poner con tu contraseña o App Password
+        $mail->Username = 'pruebaadso2025@gmail.com';  
+        $mail->Password = 'aypi xyao docb utjv';  
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
