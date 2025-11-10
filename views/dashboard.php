@@ -243,35 +243,38 @@ $mysql->desconectar();
       </div>
 
       <?php if (!$admin): ?>
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <h4 class="fw-bold text-success"><i class="bi bi-calendar-check me-2"></i> Mis Reservas</h4>
-          <a href="reservas.php" class="btn btn-success"><i class="bi bi-plus-lg"></i> Nueva Reserva</a>
-        </div>
+        <div class="card p-4 shadow-sm">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="fw-bold text-success"><i class="bi bi-calendar-check me-2"></i> Mis Reservas</h4>
+            <a href="reservas.php" class="btn btn-success"><i class="bi bi-plus-lg"></i> Nueva Reserva</a>
+          </div>
 
-        <div class="table-responsive shadow-sm">
-          <table id="tablaMisReservas" class="table table-hover bg-white table-bordered w-100 tablaMisReservas ">
-            <thead class="table-success">
-              <tr>
-                <th>Libro</th>
-                <th>Fecha</th>
-                <th>Estado</th>
-              </tr>
-            </thead>
-            <tbody>
-
-              <?php while ($reserva = mysqli_fetch_assoc($resultadoMisReservas)): ?>
+          <div class="table-responsive shadow-sm">
+            <table id="tablaMisReservas" class="table table-hover bg-white table-bordered w-100 tablaMisReservas ">
+              <thead class="table-success">
                 <tr>
-                  <td><?php echo $reserva['titulo']; ?></td>
-                  <td><?php echo $reserva['fecha_reserva']; ?></td>
-                  <td><?php echo ucfirst($reserva['estado']); ?></td>
+                  <th>Libro</th>
+                  <th>Fecha</th>
+                  <th>Estado</th>
                 </tr>
-              <?php endwhile; ?>
+              </thead>
+              <tbody>
+
+                <?php while ($reserva = mysqli_fetch_assoc($resultadoMisReservas)): ?>
+                  <tr>
+                    <td><?php echo $reserva['titulo']; ?></td>
+                    <td><?php echo $reserva['fecha_reserva']; ?></td>
+                    <td><?php echo ucfirst($reserva['estado']); ?></td>
+                  </tr>
+                <?php endwhile; ?>
 
 
-            <?php endif; ?>
-            </tbody>
-          </table>
+              <?php endif; ?>
+              </tbody>
+            </table>
+          </div>
         </div>
+
 
     </div>
   </div>

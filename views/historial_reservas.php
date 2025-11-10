@@ -154,19 +154,23 @@ $mysql->desconectar();
         </div>
 
         <div class="content">
-            <div class="content-header mb-4">
+        
+            <div class="d-flex justify-content-between mb-3">
                 <div>
                     <h2 class="fw-bold text-success mb-0">
                         <?= $admin ? 'Historial de Reservas' : 'Mis Reservas'; ?>
                     </h2>
-                    <p class="text-muted"><?= $admin ? 'Listado completo de todas las reservas registradas.' : 'Consulta tus reservas y su estado.'; ?></p>
+                    <p class="text-muted">
+                        <?= $admin ? 'Listado completo de todas las reservas registradas.' : 'Consulta tus reservas y su estado.'; ?>
+                    </p>
                 </div>
+
                 <div class="user-info">
                     <i class="bi bi-person-circle me-2"></i><?php echo ($_SESSION['tipo_usuario']); ?>
                 </div>
             </div>
 
-            <div class="table-container">
+            <div class="card p-4 shadow-sm">
                 <table id="tablaHistorialReservas" class="table table-striped table-hover">
                     <thead class="table-success">
                         <tr>
@@ -184,16 +188,21 @@ $mysql->desconectar();
                                 <td><?= $reserva['id']; ?></td>
                                 <td><?= htmlspecialchars($reserva['titulo']); ?></td>
                                 <td><?= $reserva['fecha_reserva']; ?></td>
-                                <td><span class="badge bg-<?php echo $reserva['estado'] == 'pendiente' ? 'warning' : ($reserva['estado'] == 'aprobada' ? 'success' : ($reserva['estado'] == 'creado' ? 'info' : 'danger')); ?>">
-                                        <?php echo ucfirst($reserva['estado']); ?></span>
+                                <td>
+                                    <span class="badge bg-<?php 
+                                        echo $reserva['estado'] == 'pendiente' ? 'warning' : 
+                                            ($reserva['estado'] == 'aprobada' ? 'success' : 
+                                            ($reserva['estado'] == 'creado' ? 'info' : 'danger')); ?>">
+                                        <?= ucfirst($reserva['estado']); ?>
+                                    </span>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
                     </tbody>
                 </table>
             </div>
-        </div>
-    </div>
+    </div> 
+</div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

@@ -197,7 +197,14 @@ $mysql->desconectar();
                 </div>
             </div>
 
-            <div class="table-container">
+            <div class="card p-4 shadow-sm">
+                <div class="d-flex justify-content-between mb-3">
+                    <h5 class="text-success fw-bold">
+                        <i class="bi bi-clock-history me-2"></i>
+                        <?= $admin ? 'Historial Completo de Préstamos' : 'Mis Préstamos'; ?>
+                    </h5>
+                </div>
+
                 <table id="tablaHistorialPrestamos" class="table table-striped table-hover">
                     <thead class="table-success">
                         <tr>
@@ -205,7 +212,7 @@ $mysql->desconectar();
                             <th>Libro</th>
                             <th>Fecha Préstamo</th>
                             <th>Fecha Devolución</th>
-                            <th>estado</th>
+                            <th>Estado</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -217,16 +224,17 @@ $mysql->desconectar();
                                 <td><?= htmlspecialchars($prestamo['titulo']); ?></td>
                                 <td><?= $prestamo['fecha_prestamo']; ?></td>
                                 <td><?= $prestamo['fecha_devolucion']; ?></td>
-                               <td><span
-                                    class="badge bg-<?php echo $prestamo['estado'] == 'devuelto' ? 'success' : 'warning'; ?>">
-                                    <?php echo ucfirst($prestamo['estado']); ?></span>
-                            </td>
+                                <td>
+                                    <span class="badge bg-<?php echo $prestamo['estado'] == 'devuelto' ? 'success' : 'warning'; ?>">
+                                        <?php echo ucfirst($prestamo['estado']); ?>
+                                    </span>
+                                </td>
                             </tr>
                         <?php endwhile; ?>
                     </tbody>
                 </table>
-            </div>
-        </div>
+            </div> 
+        </div> 
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -235,7 +243,7 @@ $mysql->desconectar();
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../assets/js/scripts.js"></script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('#tablaHistorialPrestamos').DataTable({
                 language: {
                     url: "https://cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json"

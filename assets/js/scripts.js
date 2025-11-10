@@ -837,3 +837,15 @@ $(document).ready(function () {
   //* Inicializar visibilidad de fechas
   $("#tipo_informe").trigger("change");
 });
+
+//* tabla para gestionar usuarios
+$(document).ready(function () {
+  if ($.fn.DataTable) {
+    $("#tablaUsuarios").DataTable({
+      language: {
+        url: "https://cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json",
+      },
+      responsive: true,
+    });
+  }
+});
