@@ -30,6 +30,81 @@ $mysql->desconectar();
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Editar Libro - Biblioteca Sena</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .dashboard-container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 260px;
+      background-color: #ffffff;
+      border-right: 1px solid #dee2e6;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 25px 15px;
+    }
+
+    .sidebar h5 {
+      color: #198754;
+      font-weight: bold;
+    }
+
+    .sidebar .nav-link {
+      color: #444;
+      border-radius: 10px;
+      padding: 10px 15px;
+      margin-bottom: 8px;
+      transition: 0.3s;
+      font-weight: 500;
+    }
+
+    .sidebar .nav-link.active,
+    .sidebar .nav-link:hover {
+      background-color: #d1e7dd;
+      color: #198754;
+    }
+
+    .logout-btn {
+      background-color: #dc3545;
+      color: #fff;
+      font-weight: 500;
+      border-radius: 8px;
+      transition: 0.3s;
+    }
+
+    .logout-btn:hover {
+      background-color: #bb2d3b;
+    }
+
+    .content {
+      flex: 1;
+      padding: 40px;
+      background-color: #f5f7fb;
+    }
+
+    .content-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .user-info {
+      background: #fff;
+      padding: 10px 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      color: #198754;
+    }
+
     .card-dashboard {
       border: none;
       border-radius: 16px;

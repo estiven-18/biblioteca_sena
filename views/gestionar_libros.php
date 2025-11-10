@@ -11,7 +11,7 @@ require_once '../models/MySQL.php';
 $mysql = new MySQL();
 $mysql->conectar();
 
-$consulta = "SELECT * FROM libro";
+$consulta = "SELECT * FROM libro ";
 $resultado = $mysql->efectuarConsulta($consulta);
 
 $mysql->desconectar();
@@ -164,7 +164,7 @@ $mysql->desconectar();
             <div class="card p-4 shadow-sm">
                 <div class="d-flex justify-content-between mb-3">
                     <h5 class="text-success fw-bold mb-0"><i class="bi bi-journal-bookmark me-2"></i>Listado de Libros</h5>
-                    <a href="agregar_libros.php" class="btn btn-success"><i class="bi bi-plus-lg"></i> Agregar Libro</a>
+                    <a href="agregar_libros.php" class="btn btn-success"><i class="bi bi-plus-circle"></i> Agregar Libro</a>
                 </div>
 
                 <table id="tablaLibros"  class="table table-striped table-hover">
