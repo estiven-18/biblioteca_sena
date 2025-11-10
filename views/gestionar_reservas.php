@@ -13,7 +13,7 @@ $mysql->conectar();
 
 //* consulta reservas con nombre de usuario y libro
 $consulta = "
-    SELECT reserva.id, usuario.nombre, libro.titulo, reserva.fecha_reserva, reserva.estado 
+    SELECT reserva.id, usuario.nombre,usuario.activo, libro.titulo, reserva.fecha_reserva, reserva.estado 
     FROM reserva 
     JOIN usuario ON reserva.id_usuario = usuario.id 
     JOIN libro ON reserva.id_libro = libro.id
@@ -190,7 +190,12 @@ $mysql->desconectar();
                         <?php while ($reserva = mysqli_fetch_assoc($resultado)): ?>
                             <tr>
                                 <td><?php echo $reserva['id']; ?></td>
-                                <td><?php echo htmlspecialchars($reserva['nombre']); ?></td>
+                                <td> <?php echo htmlspecialchars($reserva['nombre']); ?>
+                                    <?php if ($reserva['activo'] == 'inactivo'): ?>
+                                        <span class="badge bg-danger ms-2">ELIMINADO</span>
+                                    <?php endif; ?>
+
+                                </td>
                                 <td><?php echo htmlspecialchars($reserva['titulo']); ?></td>
                                 <td><?php echo $reserva['fecha_reserva']; ?></td>
                                 <td><span class="badge bg-<?php echo $reserva['estado'] == 'pendiente' ? 'warning' : ($reserva['estado'] == 'aprobada' ? 'success' : ($reserva['estado'] == 'creado' ? 'success' : 'danger'));?>">

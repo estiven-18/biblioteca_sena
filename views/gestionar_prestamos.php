@@ -13,7 +13,7 @@ $mysql->conectar();
 
 //* consulta para obtener prestamos activos con usuario y libro
 $consulta = "
-    SELECT prestamo.id, usuario.nombre, libro.titulo, prestamo.fecha_prestamo, prestamo.fecha_devolucion 
+    SELECT prestamo.id, usuario.nombre, usuario.activo, libro.titulo, prestamo.fecha_prestamo, prestamo.fecha_devolucion 
     FROM prestamo 
     JOIN reserva ON prestamo.id_reserva = reserva.id 
     JOIN usuario ON reserva.id_usuario = usuario.id 
@@ -204,7 +204,11 @@ $mysql->desconectar();
                         ?>
                             <tr>
                                 <td><?php echo $prestamo['id']; ?></td>
-                                <td><?php echo htmlspecialchars($prestamo['nombre']); ?>
+                                <td> <?php echo htmlspecialchars($prestamo['nombre']); ?>
+                                    <?php if ($prestamo['activo'] == 'inactivo'): ?>
+                                        <span class="badge bg-danger ms-2">ELIMINADO</span>
+                                    <?php endif; ?>
+
                                 </td>
                                 <td><?php echo htmlspecialchars($prestamo['titulo']); ?></td>
                                 <td><?php echo $prestamo['fecha_prestamo']; ?></td>

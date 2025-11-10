@@ -30,18 +30,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
         $resultadoDisponibilidad = $mysql->efectuarConsulta($consultaDisponibilidad);
         $libro = mysqli_fetch_assoc($resultadoDisponibilidad);
         //* si el libro esta disponible se puede reservar
-       if ($libro['disponibilidad'] == 'Disponible' && $libro['cantidad'] > 0) {
+        if ($libro['disponibilidad'] == 'Disponible' && $libro['cantidad'] > 0) {
             //* crear la reserva
             $consulta = "INSERT INTO reserva (id_usuario, id_libro, fecha_reserva) VALUES ($id_usuario, $id_libro, '$fecha_reserva')";
             $resultado = $mysql->efectuarConsulta($consulta);
-            
+
             if ($resultado) {
                 //* restar 1 a la cantidad del libro
                 $mysql->efectuarConsulta("UPDATE libro SET cantidad = cantidad - 1 WHERE id = $id_libro");
-                
+
                 //* si la cantidad llega a 0, cambiar disponibilidad a 'No disponible'
                 $mysql->efectuarConsulta("UPDATE libro SET disponibilidad = 'No disponible' WHERE id = $id_libro AND cantidad = 0");
-                
+
                 echo json_encode(["status" => "success"]);
             } else {
                 echo json_encode(["status" => "error", "message" => "Error al reservar"]);
@@ -65,37 +65,46 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
             //*esto llama a la funcion de enviar email que esta mas abajo
             //* 'email' y 'titulo' son los campos que se obtienen en la consulta anterior
             //* $datos['email'] es el email del usuario que hizo la reserva al ugual que el titulo del libro
-            enviarEmail($datos['email'], "Reserva Aprobada", "Tu reserva para el libro '{$datos['titulo']}' ha sido aprobada.");
+            // enviarEmail($datos['email'], "Reserva Aprobada", "Tu reserva para el libro '{$datos['titulo']}' ha sido aprobada.");
+            enviarEmail(
+                $datos['email'],
+                "Reserva Aprobada - {$datos['titulo']}",
+                "Hola {$datos['nombre']},
+                Tu reserva del libro '{$datos['titulo']}' de {$datos['autor']} ha sido aprobada.
+                Puedes pasar a recogerlo en la biblioteca durante el horario de atención.
+                ¡Disfruta la lectura!
+                Biblioteca SENA"
+            );
             echo json_encode(["status" => "success"]);
         } else {
             echo json_encode(["status" => "error", "message" => "Error al aprobar"]);
         }
     } elseif ($_POST['accion'] == 'rechazar') {
         $id = $_POST['id'];
-        
+
         //* obtener el id del libro antes de rechazar para devolver la cantidad
         $consultaLibro = "SELECT id_libro FROM reserva WHERE id = $id";
         $resultadoLibro = $mysql->efectuarConsulta($consultaLibro);
         $reserva = mysqli_fetch_assoc($resultadoLibro);
         $id_libro = $reserva['id_libro'];
-        
+
         //* rechazar la reserva
         $consulta = "UPDATE reserva SET estado = 'rechazada' WHERE id = $id";
         $resultado = $mysql->efectuarConsulta($consulta);
-        
+
         if ($resultado) {
             //* devolver 1 libro a la cantidad 
             $mysql->efectuarConsulta("UPDATE libro SET cantidad = cantidad + 1 WHERE id = $id_libro");
-            
+
             //* si había cantidad 0 y ahora hay 1 o más, cambiar a 'Disponible'
             $mysql->efectuarConsulta("UPDATE libro SET disponibilidad = 'Disponible' WHERE id = $id_libro AND cantidad > 0");
-            
+
             echo json_encode(["status" => "success"]);
         } else {
             echo json_encode(["status" => "error", "message" => "Error al rechazar"]);
         }
     } elseif ($_POST['accion'] == 'crear_prestamo') {
-        
+
         //* lo que hace es que crea el prestamo con la fecha actual y la fecha de devolucion es 10 dias despues
         $id_reserva = $_POST['id_reserva'];
         $fecha_prestamo = date('Y-m-d H:i:s');
@@ -105,18 +114,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
         $consulta = "INSERT INTO prestamo (id_reserva, fecha_prestamo, fecha_devolucion) VALUES ($id_reserva, '$fecha_prestamo', '$fecha_devolucion')";
         $resultado = $mysql->efectuarConsulta($consulta);
 
-        
+
         $consulta = "UPDATE reserva SET estado = 'creado' WHERE id = $id_reserva";
         $resultado = $mysql->efectuarConsulta($consulta);
         if ($resultado) {
-            
+
             //* enviar email de confirmación de prestamo craedo
             $consultaEmail = "SELECT usuario.email, libro.titulo FROM reserva JOIN usuario ON reserva.id_usuario = usuario.id JOIN libro ON reserva.id_libro = libro.id WHERE reserva.id = $id_reserva";
             $resultadoEmail = $mysql->efectuarConsulta($consultaEmail);
             $datos = mysqli_fetch_assoc($resultadoEmail);
 
             //* los datos que se van a madar
-            enviarEmail($datos['email'], "Prestamo Creado", "Tu préstamo para el libro '{$datos['titulo']}' ha sido creado. Fecha de devolución: $fecha_devolucion.");
+            // enviarEmail($datos['email'], "Prestamo Creado", "Tu préstamo para el libro '{$datos['titulo']}' ha sido creado. Fecha de devolución: $fecha_devolucion.");
+            enviarEmail(
+                $datos['email'],
+                "Préstamo Confirmado - {$datos['titulo']}",
+                "Hola {$datos['nombre']},
+                Tu préstamo del libro '{$datos['titulo']}' está activo.
+                📅 Fecha de devolución: $fecha_devolucion
+                Recuerda devolver el libro a tiempo.
+                ¡Buena lectura!
+                Biblioteca SENA"
+            );
             echo json_encode(["status" => "success"]);
         } else {
             echo json_encode(["status" => "error", "message" => "Error al crear préstamo"]);
@@ -134,8 +153,8 @@ function enviarEmail($destinatario, $asunto, $mensaje)
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'pruebaadso2025@gmail.com';  
-        $mail->Password = 'aypi xyao docb utjv';  
+        $mail->Username = 'pruebaadso2025@gmail.com';
+        $mail->Password = 'aypi xyao docb utjv';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 

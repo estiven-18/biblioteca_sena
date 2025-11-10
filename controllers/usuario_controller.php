@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
         $email = $_POST['email'];
         $email = filter_var(trim($email), FILTER_SANITIZE_EMAIL);
         $tipo = $_POST['tipo'];
-        
+
         $consultaEmail = "SELECT id FROM usuario WHERE email = '$email' AND id != $id";
         $resultadoEmail = $mysql->efectuarConsulta($consultaEmail);
 
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
         }
 
         $consulta = "UPDATE usuario SET nombre = '$nombre', apellido = '$apellido', email = '$email', tipo = '$tipo'  WHERE id = $id";
-        
+
 
         $resultado = $mysql->efectuarConsulta($consulta);
         if ($resultado) {
@@ -63,21 +63,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
     } elseif ($_POST['accion'] == 'eliminar') {
         $id = $_POST['id'];
 
+        // * desactivar el usuario
         $consultaUsuario = "UPDATE usuario SET activo = 'inactivo' WHERE id = $id";
         $resultadoUsuario = $mysql->efectuarConsulta($consultaUsuario);
 
-        //* rechazar reservas activas del usuario
-        $consultaReservas = "UPDATE reserva SET estado = 'rechazada' WHERE id_usuario = $id ";
+        //* obtener los libros de las reservas pendientes y aprobadas antes de rechazarlas
+        $consultaLibrosReservas = "SELECT id_libro, COUNT(*) as cantidad FROM reserva WHERE id_usuario = $id AND estado IN ('pendiente', 'aprobada') GROUP BY id_libro";
+        $resultadoLibros = $mysql->efectuarConsulta($consultaLibrosReservas);
+
+        //* actualizar el inventario de cada libro
+        while ($fila = mysqli_fetch_assoc($resultadoLibros)) {
+            $idLibro = $fila['id_libro'];
+            $cantidadDevolver = $fila['cantidad'];
+
+            //* sumar la cantidad al inventario actual
+            $consultaActualizarLibro = "UPDATE libro SET cantidad = cantidad + $cantidadDevolver,disponibilidad = 'Disponible'WHERE id = $idLibro";
+            $mysql->efectuarConsulta($consultaActualizarLibro);
+        }
+
+        //* despues rechazar las reservas pendientes o aprobadas
+        $consultaReservas = "UPDATE reserva SET estado = 'rechazada' WHERE id_usuario = $id AND estado IN ('pendiente', 'aprobada')";
         $mysql->efectuarConsulta($consultaReservas);
 
-        //* marcar prestamos activos como devueltos y devolver libros
-        //!
-        $consultaPrestamos = "UPDATE prestamo SET estado = 'devuelto', fecha_devolucion = CURDATE() WHERE id_reserva IN (SELECT id FROM reserva WHERE id_usuario = $id) AND estado = 'activo'";
-        $mysql->efectuarConsulta($consultaPrestamos);
-
-        //* actualizar disponibilidad de libros
-        $consultaLibros = "UPDATE libro SET disponibilidad = 'Disponible' WHERE id IN (SELECT id_libro FROM reserva WHERE id_usuario = $id AND id IN (SELECT id_reserva FROM prestamo WHERE estado = 'devuelto'))";
-        $mysql->efectuarConsulta($consultaLibros);
 
         if ($resultadoUsuario) {
             echo json_encode(["status" => "success"]);

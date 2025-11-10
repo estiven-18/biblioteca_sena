@@ -203,6 +203,8 @@ $mysql->desconectar();
           </select>
         </div>
 
+
+
         <div class="d-flex justify-content-between mt-4">
           <a href="gestionar_libros.php" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Cancelar</a>
           <button type="submit" class="btn btn-success"><i class="bi bi-save me-2"></i>Guardar Cambios</button>
@@ -213,7 +215,8 @@ $mysql->desconectar();
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="../assets/js/scripts.js"></script>
+  <script src="../assets/js/scripts.js"></script> 
 </body>
+
 
 </html>

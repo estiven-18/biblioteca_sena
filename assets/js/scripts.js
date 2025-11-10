@@ -1,4 +1,3 @@
-
 //! variavez para todos lo inputs para no hacer lo mismo en todas
 $(document).ready(function () {
   //? se selecciona todos los input que sean para nombre y apellido
@@ -42,7 +41,7 @@ $(document).ready(function () {
   });
 
   //* solo números
-  $("#cantidad, #disponibilidad").on("input", function () {
+  $("#cantidad").on("input", function () {
     let valor = $(this).val();
     let valorLimpio = valor.replace(/[^0-9]/g, "");
     $(this).val(valorLimpio);
