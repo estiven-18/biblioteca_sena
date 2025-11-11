@@ -239,7 +239,28 @@ $mysql->desconectar();
             </div>
           </div>
 
+          <div class="col-md-12 col-lg-4">
+            <div class="card-dashboard">
+              <h6 class="fw-bold text-success mb-2">Cantidad de Libros</h6>
+              <canvas id="graficoLibros" style="width:100%; height:230px;"></canvas>
+            </div>
+          </div>
+
+          <div class="col-md-12 col-lg-4">
+            <div class="card-dashboard">
+              <h6 class="fw-bold text-primary mb-2">Reservas por Mes</h6>
+              <canvas id="graficoReservas" style="width:100%; height:230px;"></canvas>
+            </div>
+          </div>
+
+          <div class="col-md-12 col-lg-4">
+            <div class="card-dashboard">
+              <h6 class="fw-bold text-warning mb-2">Usuarios Registrados</h6>
+              <canvas id="graficoUsuarios" style="width:100%; height:230px;"></canvas>
+            </div>
+          </div>
         <?php endif; ?>
+
       </div>
 
       <?php if (!$admin): ?>
@@ -284,6 +305,10 @@ $mysql->desconectar();
   <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="../assets/js/scripts.js"></script>
+  <script src="../assets/js/graficos.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
 
 
 </body>
