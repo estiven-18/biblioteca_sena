@@ -39,6 +39,13 @@ if ($admin) {
   //* este cuenta todo los libros 
   $consultaReservas = "SELECT COUNT(*) AS total_reservas FROM reserva WHERE id_usuario = $id_usuario";
 
+  //* contar prestamos activos del usuario
+  $consultaPrestamosActivos = "
+    SELECT COUNT(*) AS total_prestamos_activos 
+    FROM prestamo 
+    JOIN reserva ON prestamo.id_reserva = reserva.id 
+    WHERE reserva.id_usuario = $id_usuario AND prestamo.estado = 'activo'
+  ";
 
   $consultaMisReservas = "
         SELECT libro.titulo, reserva.fecha_reserva, reserva.estado
@@ -48,6 +55,8 @@ if ($admin) {
         ORDER BY reserva.fecha_reserva DESC
     ";
   $resultadoMisReservas = $mysql->efectuarConsulta($consultaMisReservas);
+  $resultadoPrestamosActivos = $mysql->efectuarConsulta($consultaPrestamosActivos);
+  $estadisticasPrestamosActivos = mysqli_fetch_assoc($resultadoPrestamosActivos);
 }
 
 
@@ -308,7 +317,40 @@ $mysql->desconectar();
   <script src="../assets/js/graficos.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+  //* mostrar modal de bienvenida solo para clientes donde le dice sus estadisticas
+  //? con sessionStorage se asegura que solo se muestre una vez por sesion, poque sino se mostraria cada vez que recarga la pagina 
+  <?php if (!$admin): ?>
+    <script>
+      $(document).ready(function() {
+        if (!sessionStorage.getItem('dashboardModalShown')) {
+          Swal.fire({
+            title: '¡Bienvenido!',
+            html: `
+            <div style="text-align: left; padding: 10px;">
+              <p style="font-size: 1.1em; margin-bottom: 15px;"><strong>Resumen de tu actividad:</strong></p>
+              <div style="background-color: #f0f9ff; padding: 15px; border-radius: 10px; margin-bottom: 10px;">
+                <i class="bi bi-calendar-check" style="color: #0284c7; font-size: 1.3em;"></i>
+                <strong style="color: #0284c7;"> Total de Reservas:</strong> 
+                <span style="font-size: 1.2em; font-weight: bold;"><?php echo $estadisticasReservas['total_reservas']; ?></span>
+              </div>
+              <div style="background-color: #fef3c7; padding: 15px; border-radius: 10px;">
+                <i class="bi bi-book" style="color: #d97706; font-size: 1.3em;"></i>
+                <strong style="color: #d97706;"> Préstamos Activos:</strong> 
+                <span style="font-size: 1.2em; font-weight: bold;"><?php echo $estadisticasPrestamosActivos['total_prestamos_activos']; ?></span>
+              </div>
+            </div>
+          `,
+            icon: 'info',
+            confirmButtonText: 'Entendido',
+            confirmButtonColor: '#198754',
+            width: '500px'
+          });
 
+          sessionStorage.setItem('dashboardModalShown', 'true');
+        }
+      });
+    </script>
+  <?php endif; ?>
 
 
 </body>

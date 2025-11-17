@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
         $resultado = $mysql->efectuarConsulta($consulta);
         if ($resultado) {
             //* enviar email de confirmación
-            $consultaEmail = "SELECT usuario.email, libro.titulo FROM reserva JOIN usuario ON reserva.id_usuario = usuario.id JOIN libro ON reserva.id_libro = libro.id WHERE reserva.id = $id";
+            $consultaEmail = "SELECT usuario.email, libro.titulo, usuario.nombre, libro.autor FROM reserva JOIN usuario ON reserva.id_usuario = usuario.id JOIN libro ON reserva.id_libro = libro.id WHERE reserva.id = $id";
             $resultadoEmail = $mysql->efectuarConsulta($consultaEmail);
 
             //? lo que hace es obtener el email y el titulo del libro para enviarlo en el correo
@@ -120,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion'])) {
         if ($resultado) {
 
             //* enviar email de confirmación de prestamo craedo
-            $consultaEmail = "SELECT usuario.email, libro.titulo FROM reserva JOIN usuario ON reserva.id_usuario = usuario.id JOIN libro ON reserva.id_libro = libro.id WHERE reserva.id = $id_reserva";
+            $consultaEmail = "SELECT usuario.email, libro.titulo, usuario.nombre, libro.autor FROM reserva JOIN usuario ON reserva.id_usuario = usuario.id JOIN libro ON reserva.id_libro = libro.id WHERE reserva.id = $id_reserva";
             $resultadoEmail = $mysql->efectuarConsulta($consultaEmail);
             $datos = mysqli_fetch_assoc($resultadoEmail);
 
